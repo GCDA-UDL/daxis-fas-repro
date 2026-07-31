@@ -1,0 +1,1271 @@
+{
+ "n": 180,
+ "pearson_r": 0.2749070176373767,
+ "pearson_p": 0.00018787341550068637,
+ "spearman_r": 0.2364291841938223,
+ "spearman_p": 0.0013965764848829457,
+ "mean_drop_lowcos": -0.006525555555555557,
+ "mean_drop_highcos": 0.01819222222222222,
+ "points": [
+  {
+   "cos": 0.5717438885536467,
+   "dauc": 0.013299999999999979,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": -0.30679999999999996,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.25749999999999995,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": 0.03249999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.015000000000000013,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.08639999999999992,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.08409999999999995,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": 0.02190000000000003,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": -0.0042999999999999705,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s0.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": -0.05610000000000004,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": 0.011399999999999966,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.07750000000000001,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": -0.008900000000000019,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.008399999999999963,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.04510000000000003,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.020299999999999985,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.03359999999999996,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.0232,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s1.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": 0.0021999999999999797,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": -0.1189,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.15370000000000006,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": 0.007000000000000006,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.05800000000000005,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.02949999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.05930000000000002,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.05620000000000003,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": -0.0050000000000000044,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s2.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": 0.009000000000000008,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": -0.10230000000000006,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.07720000000000005,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": 0.012199999999999989,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.05169999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.11119999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.14079999999999993,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.10260000000000002,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.07480000000000009,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s3.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": -0.10430000000000006,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": 0.04470000000000007,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.058699999999999974,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": 0.0048000000000000265,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.005299999999999971,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.0918000000000001,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.022400000000000087,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.10720000000000007,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.0645,
+   "curve": "HQ-WMCA_within_resnet50_IBT-freq-s4.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": 0.09430000000000005,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": 0.13939999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": -0.07410000000000005,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.0384000000000001,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.06269999999999998,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": -0.012800000000000034,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.006199999999999983,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": -0.005199999999999982,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.052999999999999936,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s0.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.06430000000000002,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": 0.12009999999999998,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": -0.007800000000000029,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.048900000000000055,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": -0.013299999999999979,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.03259999999999996,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.020199999999999996,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": -0.00019999999999997797,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.06369999999999998,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s1.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.0403,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": 0.18569999999999998,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": -0.06109999999999993,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.010299999999999976,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.04299999999999993,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.02180000000000004,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.05830000000000002,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": 0.09670000000000001,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.03870000000000007,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s2.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.09550000000000003,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": 0.1854,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": -0.15149999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.04479999999999995,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.08319999999999994,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.024600000000000066,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": 0.0023999999999999577,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": -0.0023999999999999577,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.059599999999999986,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s3.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.033399999999999985,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": 0.08189999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": -0.09130000000000005,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.0756,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.025600000000000067,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.08189999999999997,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": 0.0028000000000000247,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": 0.008599999999999941,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.04849999999999999,
+   "curve": "HQ-WMCA_within_resnet50_IBT-reverse-s4.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": 0.029900000000000038,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": -0.055300000000000016,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.05559999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": -0.007199999999999984,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.011599999999999944,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.04920000000000002,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.02290000000000003,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.03870000000000007,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.04300000000000004,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s0.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": -0.011099999999999999,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": -0.04349999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.0633999999999999,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": -0.021399999999999975,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": 0.0013000000000000789,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.055300000000000016,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.022399999999999975,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.04920000000000002,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.03949999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s1.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": 0.000200000000000089,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": -0.005300000000000082,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": -0.005599999999999938,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": 0.008299999999999974,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.005600000000000049,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.03069999999999995,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.005800000000000027,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.018299999999999983,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.008000000000000007,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s2.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": 0.0014999999999999458,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": 0.010600000000000054,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": -0.010099999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": 0.012599999999999945,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.07529999999999992,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": -0.08900000000000008,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.0867,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": 0.018299999999999983,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.02950000000000008,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s3.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": 0.5717438885536467,
+   "dauc": 0.053300000000000014,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Rigidmask",
+   "iter": 2
+  },
+  {
+   "cos": 0.3468546850006851,
+   "dauc": -0.018400000000000083,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Replay",
+   "iter": 3
+  },
+  {
+   "cos": 0.5360244813243771,
+   "dauc": 0.009800000000000031,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Flexiblemask",
+   "iter": 4
+  },
+  {
+   "cos": 0.6751761043685196,
+   "dauc": 0.011099999999999999,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Mannequin",
+   "iter": 5
+  },
+  {
+   "cos": 0.6686188564660943,
+   "dauc": -0.10699999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Print",
+   "iter": 6
+  },
+  {
+   "cos": 0.3847332044010948,
+   "dauc": 0.04849999999999999,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Glasses",
+   "iter": 7
+  },
+  {
+   "cos": 0.6071503384583248,
+   "dauc": 0.02970000000000006,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Papermask",
+   "iter": 8
+  },
+  {
+   "cos": 0.2183417539675234,
+   "dauc": -0.12350000000000005,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Wig",
+   "iter": 9
+  },
+  {
+   "cos": 0.4133231737738834,
+   "dauc": 0.0015000000000000568,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-freq-s4.csv",
+   "subtype": "Tattoo",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.007499999999999951,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": -0.024399999999999977,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": 0.03410000000000002,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.013599999999999945,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.07310000000000005,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.021199999999999997,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.04730000000000001,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": 0.03710000000000002,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.04579999999999995,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s0.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.09570000000000001,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": -0.0625,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": 0.013800000000000034,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.15889999999999993,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": -0.005299999999999971,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": -0.0022999999999999687,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.030299999999999994,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": 0.044499999999999984,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.04149999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s1.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.03710000000000002,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": -0.17779999999999996,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": 0.11609999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.08460000000000001,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.036699999999999955,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.02410000000000001,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.008099999999999996,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": 0.012500000000000067,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.04409999999999992,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s2.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.11099999999999999,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": 0.04370000000000007,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": -0.02870000000000006,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": 0.05840000000000001,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.06559999999999999,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.005400000000000071,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.0042000000000000925,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": -0.0017999999999999128,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.04369999999999996,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s3.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  },
+  {
+   "cos": -0.07030177255613412,
+   "dauc": -0.10299999999999998,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Wig",
+   "iter": 2
+  },
+  {
+   "cos": 0.4679595596402064,
+   "dauc": 0.04409999999999992,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Papermask",
+   "iter": 3
+  },
+  {
+   "cos": 0.48679449248325835,
+   "dauc": -0.04999999999999993,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Glasses",
+   "iter": 4
+  },
+  {
+   "cos": 0.40992341592748266,
+   "dauc": -0.10460000000000003,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Print",
+   "iter": 5
+  },
+  {
+   "cos": 0.4721032733731935,
+   "dauc": 0.20879999999999999,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Mannequin",
+   "iter": 6
+  },
+  {
+   "cos": 0.5716833432498738,
+   "dauc": 0.042300000000000004,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Flexiblemask",
+   "iter": 7
+  },
+  {
+   "cos": 0.5464061713588864,
+   "dauc": -0.008599999999999941,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Replay",
+   "iter": 8
+  },
+  {
+   "cos": 0.7208308795809539,
+   "dauc": 0.025899999999999923,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Rigidmask",
+   "iter": 9
+  },
+  {
+   "cos": 0.5838615947064654,
+   "dauc": 0.037800000000000056,
+   "curve": "HQ-WMCA_within_resnext101_64x4d_IBT-reverse-s4.csv",
+   "subtype": "Makeup",
+   "iter": 10
+  }
+ ]
+}

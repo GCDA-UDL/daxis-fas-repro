@@ -1,0 +1,11 @@
+# Nivel 1 (reproducir análisis y figuras): solo esto
+numpy>=1.21
+scipy>=1.7
+scikit-learn>=1.0
+matplotlib>=3.4
+
+# Nivel 2 (re-entrenar / re-extraer embeddings): además
+# torch>=1.10
+# torchvision>=0.11
+# pillow>=8.0
+# opencv-python>=4.5     # solo para extraer frames de HQ-WMCA (.mov)

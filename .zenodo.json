@@ -1,0 +1,26 @@
+{
+  "title": "Angular Coverage Governs Training-Set Selection in Face Presentation Attack Detection: reproducibility package",
+  "upload_type": "software",
+  "description": "<p>Code and derived results to reproduce every number and figure in the paper <em>What to Train On, Not How to Order It: Angular Coverage Governs Training-Set Selection in Face Presentation Attack Detection</em>.</p><p>The package is self-contained for analysis: it bundles the outcomes of all 331 controlled training runs plus the pre-computed discriminant axes, so <code>python src/reproduce_all.py</code> regenerates the coverage-law statistics, the forgetting analysis, the pilot experiment, the taxonomy check and all paper figures without needing the datasets or a GPU. Re-training additionally requires the seven face anti-spoofing datasets, which are not redistributed; their expected directory structure is documented in docs/DATASETS.md.</p>",
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": [
+    "face anti-spoofing",
+    "presentation attack detection",
+    "biometrics",
+    "training-set selection",
+    "submodular optimisation",
+    "discriminant geometry",
+    "curriculum learning",
+    "reproducibility"
+  ],
+  "creators": [
+    {"name": "da Silva, Vitor", "affiliation": "Universitat de Lleida"},
+    {"name": "Tomàs, Rosana", "affiliation": "Universitat de Lleida"},
+    {"name": "Roig, Concepció", "affiliation": "Universitat de Lleida"},
+    {"name": "Cores, Fernando", "affiliation": "Universitat de Lleida"},
+    {"name": "Guirado, Fernando", "affiliation": "Universitat de Lleida"},
+    {"name": "Lérida, Josep Lluís", "affiliation": "Universitat de Lleida"},
+    {"name": "Giné, Francesc", "affiliation": "Universitat de Lleida"}
+  ]
+}

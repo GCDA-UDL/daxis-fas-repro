@@ -1,0 +1,226 @@
+{
+ "HQ-WMCA": {
+  "dataset": "HQ-WMCA",
+  "orders": {
+   "O1_aligned_first": [
+    "Rigidmask",
+    "Papermask",
+    "Makeup",
+    "Mannequin",
+    "Print",
+    "Flexiblemask",
+    "Replay",
+    "Glasses",
+    "Tattoo",
+    "Wig"
+   ],
+   "O2_divergent_first": [
+    "Wig",
+    "Tattoo",
+    "Glasses",
+    "Replay",
+    "Flexiblemask",
+    "Print",
+    "Mannequin",
+    "Makeup",
+    "Papermask",
+    "Rigidmask"
+   ],
+   "O3_greedy_chain": [
+    "Makeup",
+    "Mannequin",
+    "Rigidmask",
+    "Papermask",
+    "Flexiblemask",
+    "Print",
+    "Replay",
+    "Glasses",
+    "Tattoo",
+    "Wig"
+   ],
+   "O4_greedy_opposite": [
+    "Makeup",
+    "Replay",
+    "Wig",
+    "Tattoo",
+    "Flexiblemask",
+    "Glasses",
+    "Papermask",
+    "Mannequin",
+    "Print",
+    "Rigidmask"
+   ],
+   "O5_spectral": [
+    "Wig",
+    "Mannequin",
+    "Makeup",
+    "Papermask",
+    "Rigidmask",
+    "Replay",
+    "Print",
+    "Flexiblemask",
+    "Glasses",
+    "Tattoo"
+   ],
+   "O6_cluster_blocked": [
+    "Rigidmask",
+    "Papermask",
+    "Makeup",
+    "Mannequin",
+    "Print",
+    "Flexiblemask",
+    "Replay",
+    "Glasses",
+    "Tattoo",
+    "Wig"
+   ],
+   "O9_zigzag": [
+    "Makeup",
+    "Mannequin",
+    "Tattoo",
+    "Rigidmask",
+    "Wig",
+    "Papermask",
+    "Replay",
+    "Print",
+    "Glasses",
+    "Flexiblemask"
+   ]
+  },
+  "picks": {
+   "L1_redundant_drop": "Mannequin",
+   "L1_redundant_pair": [
+    "Mannequin",
+    "Rigidmask"
+   ],
+   "L1_pair_cos": 0.7232056816413721,
+   "L2_outlier_drop": "Wig",
+   "L3_topm_aligned": {
+    "2": [
+     "Rigidmask",
+     "Papermask"
+    ],
+    "4": [
+     "Rigidmask",
+     "Papermask",
+     "Makeup",
+     "Mannequin"
+    ],
+    "6": [
+     "Rigidmask",
+     "Papermask",
+     "Makeup",
+     "Mannequin",
+     "Print",
+     "Flexiblemask"
+    ],
+    "8": [
+     "Rigidmask",
+     "Papermask",
+     "Makeup",
+     "Mannequin",
+     "Print",
+     "Flexiblemask",
+     "Replay",
+     "Glasses"
+    ]
+   },
+   "L3b_diverse": {
+    "2": [
+     "Wig",
+     "Tattoo"
+    ],
+    "4": [
+     "Wig",
+     "Tattoo",
+     "Replay",
+     "Flexiblemask"
+    ],
+    "6": [
+     "Wig",
+     "Tattoo",
+     "Replay",
+     "Flexiblemask",
+     "Makeup",
+     "Glasses"
+    ],
+    "8": [
+     "Wig",
+     "Tattoo",
+     "Replay",
+     "Flexiblemask",
+     "Makeup",
+     "Glasses",
+     "Papermask",
+     "Rigidmask"
+    ]
+   },
+   "start_most_frequent": "Makeup",
+   "F_daxis_select": {
+    "2": [
+     "Rigidmask",
+     "Replay"
+    ],
+    "4": [
+     "Rigidmask",
+     "Replay",
+     "Wig",
+     "Tattoo"
+    ],
+    "6": [
+     "Rigidmask",
+     "Replay",
+     "Wig",
+     "Tattoo",
+     "Glasses",
+     "Makeup"
+    ],
+    "8": [
+     "Rigidmask",
+     "Replay",
+     "Wig",
+     "Tattoo",
+     "Glasses",
+     "Makeup",
+     "Papermask",
+     "Flexiblemask"
+    ]
+   }
+  },
+  "stability": {
+   "tau_axes_vs_daxismatrix": 0.911111111111111,
+   "tau_shardseed0_vs_1": 0.8222222222222221,
+   "tau_shardseed0_vs_2": 0.911111111111111
+  },
+  "daxis_score": 0.3154252957240951,
+  "daxis_p": 0.009900990099009901,
+  "ci": [
+   0.30853654782979767,
+   0.32231404361839255
+  ],
+  "freq": {
+   "Flexiblemask": 2040,
+   "Glasses": 1104,
+   "Makeup": 4000,
+   "Mannequin": 1380,
+   "Papermask": 924,
+   "Print": 1176,
+   "Replay": 2088,
+   "Rigidmask": 2856,
+   "Tattoo": 576,
+   "Wig": 624
+  },
+  "mean_cos": {
+   "Flexiblemask": 0.35051149650360525,
+   "Glasses": 0.2813055325540644,
+   "Makeup": 0.4170782018310705,
+   "Mannequin": 0.40378255556645,
+   "Papermask": 0.4192518370673642,
+   "Print": 0.3658640294570616,
+   "Replay": 0.3249357865342816,
+   "Rigidmask": 0.4650994637726648,
+   "Tattoo": 0.27548432697041836,
+   "Wig": 0.12466106940552388
+  }
+ }
+}

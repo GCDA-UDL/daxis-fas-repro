@@ -1,0 +1,48 @@
+{
+ "dataset": "HQ-WMCA",
+ "n_sub": 2992,
+ "n_groups": 11,
+ "dbscan_samples": {
+  "eps": 14.47826455511561,
+  "n_clusters": 12,
+  "noise_frac": 0.04445187165775401,
+  "ARI_vs_PAI": 0.14463921585364287,
+  "NMI_vs_PAI": 0.5139619070203623,
+  "ARI_vs_binary": -0.10545012226971802
+ },
+ "dbscan_axes": {
+  "eps": 0.44999999999999996,
+  "silhouette": 0.19993739900324486,
+  "n_families": 2,
+  "families": {
+   "0": [
+    "Flexiblemask",
+    "Makeup",
+    "Mannequin",
+    "Papermask",
+    "Rigidmask"
+   ],
+   "-1": [
+    "Glasses",
+    "Tattoo",
+    "Wig"
+   ],
+   "1": [
+    "Print",
+    "Replay"
+   ]
+  }
+ },
+ "mean_cos": {
+  "Flexiblemask": 0.3505116938800701,
+  "Glasses": 0.28130534364342463,
+  "Makeup": 0.4170786028882161,
+  "Mannequin": 0.4037827025813767,
+  "Papermask": 0.4192519329099601,
+  "Print": 0.36586372339959233,
+  "Replay": 0.3249358631180168,
+  "Rigidmask": 0.4650997853474613,
+  "Tattoo": 0.2754850955875418,
+  "Wig": 0.12466126471312518
+ }
+}

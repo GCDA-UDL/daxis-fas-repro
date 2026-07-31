@@ -1,0 +1,309 @@
+{
+ "HQ-WMCA": {
+  "H4000cov": {
+   "budget": 4000,
+   "strategy": "cov",
+   "subset": [
+    "Rigidmask",
+    "Replay"
+   ],
+   "alloc": {
+    "Rigidmask": 2000,
+    "Replay": 2000
+   },
+   "coverage": 0.6131665373519211,
+   "n_imgs": 4000
+  },
+  "H4000cb": {
+   "budget": 4000,
+   "strategy": "cb",
+   "subset": [
+    "Tattoo",
+    "Papermask",
+    "Wig",
+    "Print",
+    "Mannequin"
+   ],
+   "alloc": {
+    "Tattoo": 576,
+    "Papermask": 924,
+    "Wig": 624,
+    "Print": 938,
+    "Mannequin": 938
+   },
+   "coverage": 0.8069534603205781,
+   "n_imgs": 4000
+  },
+  "H4000wcov": {
+   "budget": 4000,
+   "strategy": "wcov",
+   "subset": [
+    "Makeup"
+   ],
+   "alloc": {
+    "Makeup": 4000
+   },
+   "coverage": 0.47537038164796347,
+   "n_imgs": 4000
+  },
+  "H4000big": {
+   "budget": 4000,
+   "strategy": "big",
+   "duplicate_of": "H4000wcov",
+   "subset": [
+    "Makeup"
+   ],
+   "alloc": {
+    "Makeup": 4000
+   },
+   "coverage": 0.47537038164796347,
+   "n_imgs": 4000
+  },
+  "H4000rand": {
+   "budget": 4000,
+   "strategy": "rand",
+   "subset": [
+    "Rigidmask",
+    "Tattoo",
+    "Glasses"
+   ],
+   "alloc": {
+    "Rigidmask": 2320,
+    "Tattoo": 576,
+    "Glasses": 1104
+   },
+   "coverage": 0.6539274453284626,
+   "n_imgs": 4000
+  },
+  "H8000cov": {
+   "budget": 8000,
+   "strategy": "cov",
+   "subset": [
+    "Rigidmask",
+    "Replay",
+    "Wig",
+    "Tattoo",
+    "Glasses",
+    "Makeup"
+   ],
+   "alloc": {
+    "Rigidmask": 1899,
+    "Replay": 1899,
+    "Wig": 624,
+    "Tattoo": 576,
+    "Glasses": 1104,
+    "Makeup": 1898
+   },
+   "coverage": 0.8704422480507972,
+   "n_imgs": 8000
+  },
+  "H8000cb": {
+   "budget": 8000,
+   "strategy": "cb",
+   "subset": [
+    "Tattoo",
+    "Papermask",
+    "Wig",
+    "Print",
+    "Mannequin",
+    "Glasses",
+    "Flexiblemask",
+    "Replay"
+   ],
+   "alloc": {
+    "Tattoo": 576,
+    "Papermask": 924,
+    "Wig": 624,
+    "Print": 1176,
+    "Mannequin": 1199,
+    "Glasses": 1104,
+    "Flexiblemask": 1199,
+    "Replay": 1198
+   },
+   "coverage": 0.9410450305873106,
+   "n_imgs": 8000
+  },
+  "H8000wcov": {
+   "budget": 8000,
+   "strategy": "wcov",
+   "subset": [
+    "Makeup",
+    "Rigidmask"
+   ],
+   "alloc": {
+    "Makeup": 5144,
+    "Rigidmask": 2856
+   },
+   "coverage": 0.5930183607672307,
+   "n_imgs": 8000
+  },
+  "H8000big": {
+   "budget": 8000,
+   "strategy": "big",
+   "duplicate_of": "H8000wcov",
+   "subset": [
+    "Makeup",
+    "Rigidmask"
+   ],
+   "alloc": {
+    "Makeup": 5144,
+    "Rigidmask": 2856
+   },
+   "coverage": 0.5930183607672307,
+   "n_imgs": 8000
+  },
+  "H8000rand": {
+   "budget": 8000,
+   "strategy": "rand",
+   "subset": [
+    "Rigidmask",
+    "Tattoo",
+    "Glasses",
+    "Print",
+    "Mannequin",
+    "Papermask"
+   ],
+   "alloc": {
+    "Rigidmask": 2840,
+    "Tattoo": 576,
+    "Glasses": 1104,
+    "Print": 1176,
+    "Mannequin": 1380,
+    "Papermask": 924
+   },
+   "coverage": 0.8394774754215055,
+   "n_imgs": 8000
+  },
+  "H16000cov": {
+   "budget": 16000,
+   "strategy": "cov",
+   "subset": [
+    "Rigidmask",
+    "Replay",
+    "Wig",
+    "Tattoo",
+    "Glasses",
+    "Makeup",
+    "Papermask",
+    "Flexiblemask"
+   ],
+   "alloc": {
+    "Rigidmask": 2856,
+    "Replay": 2088,
+    "Wig": 624,
+    "Tattoo": 576,
+    "Glasses": 1104,
+    "Makeup": 5788,
+    "Papermask": 924,
+    "Flexiblemask": 2040
+   },
+   "coverage": 0.9421471325256728,
+   "n_imgs": 16000
+  },
+  "H16000cb": {
+   "budget": 16000,
+   "strategy": "cb",
+   "subset": [
+    "Tattoo",
+    "Papermask",
+    "Wig",
+    "Print",
+    "Mannequin",
+    "Glasses",
+    "Flexiblemask",
+    "Replay",
+    "Rigidmask",
+    "Makeup"
+   ],
+   "alloc": {
+    "Tattoo": 576,
+    "Papermask": 924,
+    "Wig": 624,
+    "Print": 1176,
+    "Mannequin": 1380,
+    "Glasses": 1104,
+    "Flexiblemask": 2040,
+    "Replay": 2088,
+    "Rigidmask": 2856,
+    "Makeup": 3232
+   },
+   "coverage": 0.9999999999999257,
+   "n_imgs": 16000
+  },
+  "H16000wcov": {
+   "budget": 16000,
+   "strategy": "wcov",
+   "duplicate_of": "H16000cov",
+   "subset": [
+    "Makeup",
+    "Rigidmask",
+    "Replay",
+    "Glasses",
+    "Wig",
+    "Tattoo",
+    "Papermask",
+    "Flexiblemask"
+   ],
+   "alloc": {
+    "Makeup": 5788,
+    "Rigidmask": 2856,
+    "Replay": 2088,
+    "Glasses": 1104,
+    "Wig": 624,
+    "Tattoo": 576,
+    "Papermask": 924,
+    "Flexiblemask": 2040
+   },
+   "coverage": 0.9421471325256728,
+   "n_imgs": 16000
+  },
+  "H16000big": {
+   "budget": 16000,
+   "strategy": "big",
+   "subset": [
+    "Makeup",
+    "Rigidmask",
+    "Replay",
+    "Flexiblemask",
+    "Mannequin",
+    "Print"
+   ],
+   "alloc": {
+    "Makeup": 6460,
+    "Rigidmask": 2856,
+    "Replay": 2088,
+    "Flexiblemask": 2040,
+    "Mannequin": 1380,
+    "Print": 1176
+   },
+   "coverage": 0.7679825410221351,
+   "n_imgs": 16000
+  },
+  "H16000rand": {
+   "budget": 16000,
+   "strategy": "rand",
+   "subset": [
+    "Rigidmask",
+    "Tattoo",
+    "Glasses",
+    "Print",
+    "Mannequin",
+    "Papermask",
+    "Makeup",
+    "Flexiblemask"
+   ],
+   "alloc": {
+    "Rigidmask": 2856,
+    "Tattoo": 576,
+    "Glasses": 1104,
+    "Print": 1176,
+    "Mannequin": 1380,
+    "Papermask": 924,
+    "Makeup": 5944,
+    "Flexiblemask": 2040
+   },
+   "coverage": 0.9046668595772627,
+   "n_imgs": 16000
+  }
+ }
+}

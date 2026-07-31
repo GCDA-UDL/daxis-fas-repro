@@ -1,0 +1,91 @@
+{
+ "dataset": "HQ-WMCA",
+ "n_train": 15071,
+ "n_test": 6461,
+ "K": 10,
+ "reps": {
+  "PCA-50 (no superv.)": {
+   "knn_pai_balacc": 0.9252303484910359,
+   "probe_auc_livespoof": 0.9632315824490407,
+   "dbscan_ari_pai": 0.10901950684452663,
+   "dbscan_nmi_pai": 0.5486786889463982,
+   "dbscan_nclusters": 426,
+   "silhouette_pai": 0.02652812222930533,
+   "dims": 50
+  },
+  "PCA-10 (no superv.)": {
+   "knn_pai_balacc": 0.8752139659725579,
+   "probe_auc_livespoof": 0.9495702902067062,
+   "dbscan_ari_pai": 0.09685632065902763,
+   "dbscan_nmi_pai": 0.5334382071092415,
+   "dbscan_nclusters": 385,
+   "silhouette_pai": 0.06281519076236068,
+   "dims": 10
+  },
+  "random-10 (control)": {
+   "knn_pai_balacc": 0.6793760547652298,
+   "probe_auc_livespoof": 0.7436073038457196,
+   "dbscan_ari_pai": 0.15077935342680288,
+   "dbscan_nmi_pai": 0.49581060350199263,
+   "dbscan_nclusters": 282,
+   "silhouette_pai": 0.004630276169760482,
+   "dims": 10
+  },
+  "LDA (superv., Sigma^-1)": {
+   "knn_pai_balacc": 0.9580917231692588,
+   "probe_auc_livespoof": 0.9865341829867882,
+   "dbscan_ari_pai": 0.36727849837360843,
+   "dbscan_nmi_pai": 0.646537473613533,
+   "dbscan_nclusters": 128,
+   "silhouette_pai": 0.45872870251869907,
+   "dims": 10
+  },
+  "AXIAL DAXIS (solo medias)": {
+   "knn_pai_balacc": 0.8586456886226376,
+   "probe_auc_livespoof": 0.9479575051195893,
+   "dbscan_ari_pai": 0.23262562113241875,
+   "dbscan_nmi_pai": 0.5497909665198424,
+   "dbscan_nclusters": 248,
+   "silhouette_pai": 0.062470887265085345,
+   "dims": 10
+  }
+ },
+ "sweep": {
+  "10": {
+   "axial_knn": 0.6701465692432342,
+   "axial_auc": 0.9154620753640174,
+   "lda_knn": 0.7535468326960365,
+   "lda_auc": 0.8723052343413812
+  },
+  "25": {
+   "axial_knn": 0.764685227706872,
+   "axial_auc": 0.9344242407595609,
+   "lda_knn": 0.782796918252253,
+   "lda_auc": 0.8433033329976226
+  },
+  "50": {
+   "axial_knn": 0.7740330530909504,
+   "axial_auc": 0.9369359677473502,
+   "lda_knn": 0.8541384834081817,
+   "lda_auc": 0.8497753789716873
+  },
+  "100": {
+   "axial_knn": 0.7937527686060797,
+   "axial_auc": 0.9431217439869621,
+   "lda_knn": 0.8918536048565386,
+   "lda_auc": 0.9299412811333596
+  },
+  "200": {
+   "axial_knn": 0.8290052107514089,
+   "axial_auc": 0.9477115206782578,
+   "lda_knn": 0.9199001415367719,
+   "lda_auc": 0.904616328361762
+  },
+  "todas": {
+   "axial_knn": 0.8586456886226376,
+   "axial_auc": 0.9479575051195893,
+   "lda_knn": 0.9580917231692588,
+   "lda_auc": 0.9865341829867882
+  }
+ }
+}

@@ -1,0 +1,577 @@
+{
+ "CelebA-Spoof": {
+  "ks": [
+   "3DMask",
+   "A4",
+   "FaceMask",
+   "PC",
+   "Pad",
+   "Phone",
+   "Photo",
+   "Poster",
+   "RegionMask",
+   "UpperBodyMask"
+  ],
+  "cells": {
+   "GCelebASpoofc00": {
+    "subset": [
+     "3DMask",
+     "RegionMask"
+    ],
+    "m": 2,
+    "coverage": 0.605062381891332
+   },
+   "GCelebASpoofc01": {
+    "subset": [
+     "PC",
+     "UpperBodyMask"
+    ],
+    "m": 2,
+    "coverage": 0.8069906206985917
+   },
+   "GCelebASpoofc02": {
+    "subset": [
+     "Pad",
+     "Phone",
+     "RegionMask"
+    ],
+    "m": 3,
+    "coverage": 0.8360510964861694
+   },
+   "GCelebASpoofc03": {
+    "subset": [
+     "FaceMask",
+     "Phone",
+     "RegionMask",
+     "UpperBodyMask"
+    ],
+    "m": 4,
+    "coverage": 0.8661744347985694
+   },
+   "GCelebASpoofc04": {
+    "subset": [
+     "A4",
+     "PC",
+     "Phone",
+     "UpperBodyMask"
+    ],
+    "m": 4,
+    "coverage": 0.885309391090607
+   },
+   "GCelebASpoofc05": {
+    "subset": [
+     "FaceMask",
+     "PC",
+     "Pad",
+     "RegionMask",
+     "UpperBodyMask"
+    ],
+    "m": 5,
+    "coverage": 0.8964763355868982
+   },
+   "GCelebASpoofc06": {
+    "subset": [
+     "FaceMask",
+     "PC",
+     "Pad",
+     "Phone",
+     "RegionMask",
+     "UpperBodyMask"
+    ],
+    "m": 6,
+    "coverage": 0.9131339531085955
+   },
+   "GCelebASpoofc07": {
+    "subset": [
+     "3DMask",
+     "FaceMask",
+     "Pad",
+     "Photo"
+    ],
+    "m": 4,
+    "coverage": 0.9245131460356927
+   },
+   "GCelebASpoofc08": {
+    "subset": [
+     "3DMask",
+     "FaceMask",
+     "PC",
+     "Pad",
+     "Phone",
+     "RegionMask",
+     "UpperBodyMask"
+    ],
+    "m": 7,
+    "coverage": 0.9364786768017884
+   },
+   "GCelebASpoofc09": {
+    "subset": [
+     "3DMask",
+     "A4",
+     "PC",
+     "Pad",
+     "Phone",
+     "UpperBodyMask"
+    ],
+    "m": 6,
+    "coverage": 0.9472859306031355
+   },
+   "GCelebASpoofc10": {
+    "subset": [
+     "A4",
+     "FaceMask",
+     "PC",
+     "Pad",
+     "Phone",
+     "Photo",
+     "Poster",
+     "RegionMask"
+    ],
+    "m": 8,
+    "coverage": 0.9571640550932796
+   },
+   "GCelebASpoofc11": {
+    "subset": [
+     "3DMask",
+     "FaceMask",
+     "PC",
+     "Pad",
+     "Phone",
+     "Poster",
+     "UpperBodyMask"
+    ],
+    "m": 7,
+    "coverage": 0.9679012246417912
+   },
+   "GCelebASpoofc12": {
+    "subset": [
+     "3DMask",
+     "PC",
+     "Pad",
+     "Phone",
+     "Photo",
+     "Poster",
+     "RegionMask",
+     "UpperBodyMask"
+    ],
+    "m": 8,
+    "coverage": 0.9758285055560278
+   },
+   "GCelebASpoofc13": {
+    "subset": [
+     "3DMask",
+     "A4",
+     "FaceMask",
+     "PC",
+     "Pad",
+     "Phone",
+     "Poster",
+     "RegionMask",
+     "UpperBodyMask"
+    ],
+    "m": 9,
+    "coverage": 0.9962510358050451
+   }
+  }
+ },
+ "CASIA-FASD": {
+  "ks": [
+   "cut",
+   "replay",
+   "warped"
+  ],
+  "cells": {
+   "GCASIAFASDc00": {
+    "subset": [
+     "cut",
+     "warped"
+    ],
+    "m": 2,
+    "coverage": 0.8488355985858117
+   },
+   "GCASIAFASDc01": {
+    "subset": [
+     "replay",
+     "warped"
+    ],
+    "m": 2,
+    "coverage": 0.9645002316269607
+   },
+   "GCASIAFASDc02": {
+    "subset": [
+     "cut",
+     "replay"
+    ],
+    "m": 2,
+    "coverage": 0.9645002316269636
+   }
+  }
+ },
+ "SiW": {
+  "ks": [
+   "print1",
+   "print2",
+   "replay1",
+   "replay2",
+   "replay3",
+   "replay4"
+  ],
+  "cells": {
+   "GSiWc00": {
+    "subset": [
+     "print1",
+     "print2"
+    ],
+    "m": 2,
+    "coverage": 0.5701271627808107
+   },
+   "GSiWc01": {
+    "subset": [
+     "replay2",
+     "replay4"
+    ],
+    "m": 2,
+    "coverage": 0.725307260190795
+   },
+   "GSiWc02": {
+    "subset": [
+     "replay1",
+     "replay3",
+     "replay4"
+    ],
+    "m": 3,
+    "coverage": 0.7637015303074421
+   },
+   "GSiWc03": {
+    "subset": [
+     "print1",
+     "replay4"
+    ],
+    "m": 2,
+    "coverage": 0.8764634609473272
+   },
+   "GSiWc04": {
+    "subset": [
+     "print2",
+     "replay1"
+    ],
+    "m": 2,
+    "coverage": 0.8870255896452144
+   },
+   "GSiWc05": {
+    "subset": [
+     "print1",
+     "replay3",
+     "replay4"
+    ],
+    "m": 3,
+    "coverage": 0.9190156388620503
+   },
+   "GSiWc06": {
+    "subset": [
+     "print2",
+     "replay1",
+     "replay2"
+    ],
+    "m": 3,
+    "coverage": 0.9213809904831644
+   },
+   "GSiWc07": {
+    "subset": [
+     "print1",
+     "replay1",
+     "replay3"
+    ],
+    "m": 3,
+    "coverage": 0.9229766493660163
+   },
+   "GSiWc08": {
+    "subset": [
+     "print1",
+     "print2",
+     "replay1",
+     "replay4"
+    ],
+    "m": 4,
+    "coverage": 0.9296935394411766
+   },
+   "GSiWc09": {
+    "subset": [
+     "print1",
+     "replay1",
+     "replay2",
+     "replay3"
+    ],
+    "m": 4,
+    "coverage": 0.9573320502039664
+   },
+   "GSiWc10": {
+    "subset": [
+     "print1",
+     "print2",
+     "replay1",
+     "replay2",
+     "replay4"
+    ],
+    "m": 5,
+    "coverage": 0.9640489402791267
+   },
+   "GSiWc11": {
+    "subset": [
+     "print1",
+     "replay1",
+     "replay2",
+     "replay3",
+     "replay4"
+    ],
+    "m": 5,
+    "coverage": 0.9932487984524708
+   }
+  }
+ },
+ "OULU-NPU": {
+  "ks": [
+   "print1",
+   "print2",
+   "replay1",
+   "replay2"
+  ],
+  "cells": {
+   "GOULUNPUc00": {
+    "subset": [
+     "print1",
+     "print2"
+    ],
+    "m": 2,
+    "coverage": 0.7665776295821065
+   },
+   "GOULUNPUc01": {
+    "subset": [
+     "replay1",
+     "replay2"
+    ],
+    "m": 2,
+    "coverage": 0.8248350330302485
+   },
+   "GOULUNPUc02": {
+    "subset": [
+     "print1",
+     "replay1"
+    ],
+    "m": 2,
+    "coverage": 0.8922487145792717
+   },
+   "GOULUNPUc03": {
+    "subset": [
+     "print2",
+     "replay1"
+    ],
+    "m": 2,
+    "coverage": 0.8922487145792773
+   },
+   "GOULUNPUc04": {
+    "subset": [
+     "print2",
+     "replay2"
+    ],
+    "m": 2,
+    "coverage": 0.8922487145792906
+   },
+   "GOULUNPUc05": {
+    "subset": [
+     "print1",
+     "replay2"
+    ],
+    "m": 2,
+    "coverage": 0.8925519066504153
+   },
+   "GOULUNPUc06": {
+    "subset": [
+     "print1",
+     "print2",
+     "replay1"
+    ],
+    "m": 3,
+    "coverage": 0.9163416757908833
+   },
+   "GOULUNPUc07": {
+    "subset": [
+     "print1",
+     "print2",
+     "replay2"
+    ],
+    "m": 3,
+    "coverage": 0.9166448678620269
+   },
+   "GOULUNPUc08": {
+    "subset": [
+     "print1",
+     "replay1",
+     "replay2"
+    ],
+    "m": 3,
+    "coverage": 0.9759070387882567
+   },
+   "GOULUNPUc09": {
+    "subset": [
+     "print2",
+     "replay1",
+     "replay2"
+    ],
+    "m": 3,
+    "coverage": 0.9759070387882625
+   }
+  }
+ },
+ "replay": {
+  "ks": [
+   "highdef_photo",
+   "highdef_video",
+   "mobile_photo",
+   "mobile_video",
+   "print_photo"
+  ],
+  "cells": {
+   "Greplayc00": {
+    "subset": [
+     "mobile_photo",
+     "mobile_video"
+    ],
+    "m": 2,
+    "coverage": 0.7586548247431348
+   },
+   "Greplayc01": {
+    "subset": [
+     "highdef_photo",
+     "highdef_video"
+    ],
+    "m": 2,
+    "coverage": 0.8092147985166255
+   },
+   "Greplayc02": {
+    "subset": [
+     "highdef_video",
+     "mobile_video"
+    ],
+    "m": 2,
+    "coverage": 0.8351148653668566
+   },
+   "Greplayc03": {
+    "subset": [
+     "highdef_video",
+     "mobile_photo",
+     "mobile_video"
+    ],
+    "m": 3,
+    "coverage": 0.8445248119343638
+   },
+   "Greplayc04": {
+    "subset": [
+     "highdef_video",
+     "print_photo"
+    ],
+    "m": 2,
+    "coverage": 0.8494084137653382
+   },
+   "Greplayc05": {
+    "subset": [
+     "mobile_photo",
+     "print_photo"
+    ],
+    "m": 2,
+    "coverage": 0.8597506805341275
+   },
+   "Greplayc06": {
+    "subset": [
+     "highdef_photo",
+     "highdef_video",
+     "mobile_photo"
+    ],
+    "m": 3,
+    "coverage": 0.8927556517752727
+   },
+   "Greplayc07": {
+    "subset": [
+     "highdef_photo",
+     "highdef_video",
+     "mobile_photo",
+     "mobile_video"
+    ],
+    "m": 4,
+    "coverage": 0.9021655983427811
+   },
+   "Greplayc08": {
+    "subset": [
+     "highdef_video",
+     "mobile_photo",
+     "print_photo"
+    ],
+    "m": 3,
+    "coverage": 0.9329492670239852
+   },
+   "Greplayc09": {
+    "subset": [
+     "highdef_video",
+     "mobile_photo",
+     "mobile_video",
+     "print_photo"
+    ],
+    "m": 4,
+    "coverage": 0.9423592135914938
+   },
+   "Greplayc10": {
+    "subset": [
+     "highdef_photo",
+     "mobile_photo",
+     "mobile_video",
+     "print_photo"
+    ],
+    "m": 4,
+    "coverage": 0.9560004958938162
+   },
+   "Greplayc11": {
+    "subset": [
+     "highdef_photo",
+     "highdef_video",
+     "mobile_video",
+     "print_photo"
+    ],
+    "m": 4,
+    "coverage": 0.9905900534324037
+   }
+  }
+ },
+ "CASIA-SURF": {
+  "ks": [
+   "04_en_b",
+   "05_enm_s",
+   "06_enm_b"
+  ],
+  "cells": {
+   "GCASIASURFc00": {
+    "subset": [
+     "04_en_b",
+     "06_enm_b"
+    ],
+    "m": 2,
+    "coverage": 0.9839477773323374
+   },
+   "GCASIASURFc01": {
+    "subset": [
+     "04_en_b",
+     "05_enm_s"
+    ],
+    "m": 2,
+    "coverage": 0.9927284205863579
+   },
+   "GCASIASURFc02": {
+    "subset": [
+     "05_enm_s",
+     "06_enm_b"
+    ],
+    "m": 2,
+    "coverage": 0.9927284205863586
+   }
+  }
+ }
+}

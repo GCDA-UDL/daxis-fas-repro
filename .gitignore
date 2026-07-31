@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+runs/
+manifests/
+# embeddings adicionales que genere el usuario (el de HQ-WMCA sí va incluido)
+results/artifacts/*_train_resnext*.npz
+results/artifacts/*_dev_*.npz
+results/artifacts/*_test_*.npz

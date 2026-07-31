@@ -1,0 +1,7 @@
+{
+ "auroc_pergroup": 0.38592445036904627,
+ "auroc_global": 0.7695487444692779,
+ "n": 20000,
+ "n_mislabeled": 3383,
+ "nota": "per-grupo es ciego al mal-etiquetado sistematico de un grupo completo"
+}

@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite the paper below."
+title: "Angular Coverage Governs Training-Set Selection in Face PAD: reproducibility package"
+type: software
+license: MIT
+authors:
+  - family-names: "da Silva"
+    given-names: "Vitor"
+    affiliation: "Universitat de Lleida"
+  - family-names: "Tomàs"
+    given-names: "Rosana"
+    affiliation: "Universitat de Lleida"
+  - family-names: "Roig"
+    given-names: "Concepció"
+    affiliation: "Universitat de Lleida"
+  - family-names: "Cores"
+    given-names: "Fernando"
+    affiliation: "Universitat de Lleida"
+  - family-names: "Guirado"
+    given-names: "Fernando"
+    affiliation: "Universitat de Lleida"
+  - family-names: "Lérida"
+    given-names: "Josep Lluís"
+    affiliation: "Universitat de Lleida"
+  - family-names: "Giné"
+    given-names: "Francesc"
+    affiliation: "Universitat de Lleida"
+preferred-citation:
+  type: article
+  title: "What to Train On, Not How to Order It: Angular Coverage Governs Training-Set Selection in Face Presentation Attack Detection"
+  authors:
+    - family-names: "da Silva"
+      given-names: "Vitor"
+  year: 2026
+  notes: "Under review"
