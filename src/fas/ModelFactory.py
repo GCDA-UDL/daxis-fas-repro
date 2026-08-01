@@ -88,7 +88,7 @@ class ModelFactory:
     def create(model_name: str, num_classes: int, device="cpu", pretrained=False, multiGPU=False):
         print(f"ModelFactory->create: Pretrained: {pretrained}")
         if model_name not in ModelFactory.MODEL_MAP:
-            raise ValueError(f"Modelo «{model_name}» no está soportado.")
+            raise ValueError(f"Model {model_name} is not supported.")
         model_cls = ModelFactory.MODEL_MAP[model_name]
         # model = model_cls(num_classes)
         model = model_cls(num_classes, pretrained=pretrained)
@@ -139,7 +139,7 @@ def is_3d_model(model_name):
 #     @staticmethod
 #     def vit_b_16(num_classes: int, device: torch.device):
 #         model = models.vit_b_16(pretrained=True)
-#         # Reemplaza la cabeza de clasificación del ViT
+#         # replace the ViT classification head
 #         model.heads.head = nn.Linear(model.heads.head.in_features, num_classes)
 #         return model.to(device)
     

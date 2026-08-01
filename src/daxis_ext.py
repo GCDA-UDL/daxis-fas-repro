@@ -87,7 +87,7 @@ def order_aligned_first(ks, C, desc=True):
 
 def order_greedy(ks, axes, Xs, y, subtype, start, opposite=False):
     """Starts at `start`; each step adds the subtype with the highest (or lowest) cosine
-    respecto al eje AGREGADO del conjunto ya incluido (recomputado sobre la unión)."""
+    against the AGGREGATE axis of what is already selected (recomputed over the union)."""
     left = [k for k in ks if k != start]
     seq = [start]
     while left:
@@ -137,16 +137,16 @@ def order_cluster_blocked(ks, C, n_blocks=3):
 def pick_diverse(ks, C, m):
     """Farthest-point sampling angular: subset de m subtipos maximizando diversidad."""
     mean_cos = (C.sum(1) - 1.0) / (len(ks) - 1)
-    sel = [int(np.argmin(mean_cos))]                      # semilla: el más apartado
+    sel = [int(np.argmin(mean_cos))]                      # seed: the most distant one
     while len(sel) < m:
         cand = [i for i in range(len(ks)) if i not in sel]
-        # maximiza el ángulo mínimo (= minimiza el coseno máximo a lo ya elegido)
+        # maximise the minimum angle (= minimise the maximum cosine to what is chosen)
         best = min(cand, key=lambda i: max(C[i, j] for j in sel))
         sel.append(best)
     return [ks[i] for i in sel]
 
 
-# ---------- scores per-sample (extensión nueva) ----------
+# ---------- per-sample scores (new extension) ----------
 
 def sample_scores(Xs, y, subtype):
     """S1 margen axial, S2 delta LOO de alineamiento, S3 coherencia local.
@@ -157,7 +157,7 @@ def sample_scores(Xs, y, subtype):
     axes = all_axes(Xs, y, subtype)
     # midpoint por grupo para el margen firmado
     S1 = np.zeros(len(y)); S2 = np.zeros(len(y)); S3 = np.full(len(y), np.nan)
-    # axis "resto" por grupo (media de los demás axes) para S2
+    # per-group "rest" axis (mean of the other axes), used by S2
     rest = {st: _unit(np.mean([axes[o] for o in sts if o != st], axis=0)) for st in sts}
     for st in sts:
         d = axes[st]
@@ -165,7 +165,7 @@ def sample_scores(Xs, y, subtype):
         mu_sp = Xs[g_sp].mean(0); n_sp = int(g_sp.sum())
         c = (mu_sp + mu_live) / 2.0
         # S1 para spoof del grupo y para live (live usa el axis de su... todos los axes? usar
-        # el peor margen sobre todos los axes sería severo; usamos el axis del grupo para spoof
+        # the worst margin over all axes would be too harsh; we use the group axis for spoof rows
         # y para live el margen respecto al axis AGREGADO global)
         S1[g_sp] = (Xs[g_sp] - c) @ d                      # y=1: lado positivo = correcto
         S3[g_sp] = ((Xs[g_sp] - mu_live) / (np.linalg.norm(Xs[g_sp] - mu_live, axis=1, keepdims=True) + 1e-12)) @ d

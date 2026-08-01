@@ -46,9 +46,9 @@ def coverage(ks, C, subset):
 
 
 def sample_subsets(ks, C, n_target, seed=0):
-    """Subconjuntos de tamaños 2..K-1 elegidos para CUBRIR el rango de coverage.
+    """Subsets of size 2..K-1 chosen to SPAN the coverage range.
 
-    Si el nº total de combinaciones es pequeño (K<=5) se toman all; si es grande, se muestrea
+    If the number of combinations is small (K<=5) all are taken; otherwise they are sampled
     y se estratifica por coverage para no concentrar todos los puntos en el mismo sitio."""
     K = len(ks)
     sizes = list(range(2, K)) or [1]

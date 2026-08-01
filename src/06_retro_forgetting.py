@@ -85,7 +85,7 @@ def main():
         ax.plot(xs, np.polyval(z, xs), "k--", lw=1)
         ax.axhline(0, color="grey", lw=0.6)
         ax.set_xlabel("cos(eje del PAI entrante, eje agregado previo)")
-        ax.set_ylabel("ΔAUC en la transición")
+        ax.set_ylabel("AUC change at the transition")
         ax.set_title(f"{ds}: olvido vs alineamiento angular (r={pr[0]:+.2f})")
         fig.tight_layout(); fig.savefig(os.path.join(FIG_DIR, f"d3_forgetting_{ds}.png".replace("+", "plus")), dpi=130)
         print(f"  figure -> artifacts/d3_forgetting_{ds}.png")

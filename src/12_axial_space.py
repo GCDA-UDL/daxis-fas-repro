@@ -37,11 +37,11 @@ from sklearn.metrics import (adjusted_rand_score, normalized_mutual_info_score,
 from sklearn.random_projection import GaussianRandomProjection
 
 from config import ART, RES_DAXIS, RES_CURRICULUM, FIG_DIR, OUT, FAS_DATA_ROOT, MANIFEST_DIR  # noqa
-SUBSAMPLE_SWEEP = [10, 25, 50, 100, 200, None]     # muestras/PAI para estimar la representación
+SUBSAMPLE_SWEEP = [10, 25, 50, 100, 200, None]     # samples/PAI used to estimate the representation
 
 
 def axial_fit(Xtr, ytr, sttr, ks):
-    """Ejes DAXIS: una dirección por PAI (spoof_k vs live). Solo medias."""
+    """DAXIS axes: one direction per PAI (spoof_k vs bonafide). Means only."""
     mu_live = Xtr[ytr == 0].mean(0)
     W = []
     for k in ks:
@@ -53,15 +53,15 @@ def axial_fit(Xtr, ytr, sttr, ks):
 
 
 def eval_rep(Ztr, Zte, sttr, stte, yte, tag, out):
-    """Evalúa una representación en el split held-out."""
+    """Evaluates a representation on the held-out split."""
     r = {}
-    # 1. kNN de PAI (¿preserva la identidad del attack?)
+    # 1. kNN on PAI (does it preserve attack identity?)
     kn = KNeighborsClassifier(n_neighbors=15).fit(Ztr, sttr)
     r["knn_pai_balacc"] = float(balanced_accuracy_score(stte, kn.predict(Zte)))
     # 2. sonda lineal live/spoof
     lr = LogisticRegression(max_iter=2000).fit(Ztr, (sttr != "live").astype(int))
     r["probe_auc_livespoof"] = float(roc_auc_score(yte, lr.decision_function(Zte)))
-    # 3. unsupervised DBSCAN sobre el held-out -> ¿recupera los PAIs?
+    # 3. unsupervised DBSCAN on the held-out split: does it recover the PAIs?
     Zn = (Zte - Zte.mean(0)) / (Zte.std(0) + 1e-9)
     nn = NearestNeighbors(n_neighbors=10).fit(Zn)
     d, _ = nn.kneighbors(Zn)
@@ -70,7 +70,7 @@ def eval_rep(Ztr, Zte, sttr, stte, yte, tag, out):
     r["dbscan_ari_pai"] = float(adjusted_rand_score(stte, lb))
     r["dbscan_nmi_pai"] = float(normalized_mutual_info_score(stte, lb))
     r["dbscan_nclusters"] = int(len(set(lb)) - (1 if -1 in lb else 0))
-    # 4. silhouette de la partición verdadera (¿está bien formada la geometría?)
+    # 4. silhouette of the true partition (is the geometry well formed?)
     try:
         r["silhouette_pai"] = float(silhouette_score(Zn, stte))
     except Exception:
@@ -102,7 +102,7 @@ def main():
     print(f"== AXIAL COORDINATES [{ds}] ==")
     print(f"  train {m_tr.sum()} samples / {len(subs)-len(te_subs)} subjects · "
           f"held-out {m_te.sum()} / {len(te_subs)} subjects · K={len(ks)} PAIs")
-    # all las clases deben existir en ambos lados para que las métricas tengan sentido
+    # every class must exist on both sides for the metrics to be meaningful
     faltan = [k for k in ks if (sttr == k).sum() == 0 or (stte == k).sum() == 0]
     if faltan: print(f"  warning: PAIs missing from a split: {faltan}")
 
@@ -129,7 +129,7 @@ def main():
     W = axial_fit(Xtr, ytr, sttr, ks)
     eval_rep(Xtr @ W, Xte @ W, sttr, stte, yte, "AXIAL DAXIS (means only)", reps)
 
-    # --- small-sample regime: ¿aguanta con pocas samples por PAI? ---
+    # --- small-sample regime: does it hold up with few samples per PAI? ---
     print(f"\n  --- small-sample sweep (samples/PAI used to FIT the representation) ---")
     print(f"  {'n/PAI':>6s}  {'AXIAL kNN':>10s} {'LDA kNN':>9s}   {'AXIAL AUC':>10s} {'LDA AUC':>9s}")
     sweep = {}

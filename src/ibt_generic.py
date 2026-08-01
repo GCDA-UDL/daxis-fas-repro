@@ -2,19 +2,19 @@
 """
 IBT generalizado — curriculum binario-incremental sobre CUALQUIER manifiesto con subtipos.
 
-Motivación: en UniAttackData+ la validación tiene 13 bonafide, así que la selección honesta de
-checkpoint es imposible y el Wilcoxon pareado salió no significativo (p=0.385). Aquí usamos
-datasets con validación GRANDE (CelebA-Spoof, OULU-NPU, SiW) para poder decidir de verdad si IBT
-aporta. Se compara siempre contra un `standard` PAREADO (mismas iteraciones/épocas/loaders).
+Motivation: UniAttackData+ has 13 bonafide samples in validation, so honest checkpoint
+selection is impossible there and the paired Wilcoxon came out non-significant (p=0.385). Here we use
+datasets with a LARGE validation split so the question can actually be decided. The comparison is
+always against a MATCHED `standard` baseline (same iterations, epochs and loaders).
 
-Diseños:
+Designs:
   --design within  : todos los subtipos en train y test (control; ojo: OULU/SiW saturan).
   --design xtype   : ZERO-SHOT CROSS-TYPE. Los subtipos de --holdout se EXCLUYEN de train/dev y el
                      test se restringe a bonafide + esos subtipos no vistos. Replica el reto real
-                     de la competición, pero con una validación lo bastante grande para seleccionar.
+                     the competition setting, but with a validation split large enough to select on.
 
 Órdenes: freq (frecuente->raro) | reverse | random | standard (all-at-once pareado).
-Selección: siempre por dev (EER); el test solo se mira para reportar.
+Selection: always on dev (EER); test is only read to report.
 
 Ej:
   python ibt_generic.py --manifest manifests/CelebA-Spoof_subtype.csv --dataset CelebA-Spoof \
@@ -96,7 +96,7 @@ def main():
     ap.add_argument("--order", default="freq", choices=["freq", "reverse", "random", "standard"])
     # --- extensiones DAXIS (daxis_experiments): retrocompatibles, without efecto si no se usan ---
     ap.add_argument("--order_list", default=None, help="orden custom de subtipos (coma); ignora --order salvo 'standard'")
-    ap.add_argument("--stages_json", default=None, help="JSON: etapas=[[ [subtipo,frac],... ],...] (rehearsal/fusión)")
+    ap.add_argument("--stages_json", default=None, help="JSON: stages=[[ [subtype,frac],... ],...] (rehearsal/merged stages)")
     ap.add_argument("--sample_order", default="shuffle", choices=["shuffle", "easy2hard", "hard2easy"],
                     help="orden intra-etapa por margen axial (requiere --sample_scores)")
     ap.add_argument("--sample_scores", default=None, help="csv con columnas path,S1 (para --sample_order)")
@@ -121,7 +121,7 @@ def main():
     tag = f"{tagds}_{args.model}_{method}".replace("+", "plus").replace("/", "_")
 
     rows = load_manifest(args.manifest, args.dataset)
-    assert rows, f"manifiesto vacío para {args.dataset}"
+    assert rows, f"empty manifest for {args.dataset}"
 
     tr_pool = [r for r in rows if r[0] in ("train",)]
     dv_pool = [r for r in rows if r[0] == "dev"]
@@ -169,7 +169,7 @@ def main():
         smap = {r["path"]: float(r["S1"]) for r in _csv.DictReader(open(args.sample_scores))}
     print(f"[{tag}] bona={len(bona)} spoof={sum(len(v) for v in spoof_by.values())} "
           f"dev={len(dv)} test={len(te)}")
-    print(f"  diseño={args.design} holdout={hold or '-'} orden={'ALL-AT-ONCE' if args.order=='standard' else order}")
+    print(f"  design={args.design} holdout={hold or '-'} order={'ALL-AT-ONCE' if args.order=='standard' else order}")
 
     tf_tr, tf_ev = make_tf(True), make_tf(False)
     dl = lambda items, sh, tf: DataLoader(ListDataset(items, tf), batch_size=args.batch_size,
@@ -195,7 +195,7 @@ def main():
         stages = ["__all__"] * (len(order) + 1) if args.order == "standard" else order + ["__consolidation__"]
     ep_acc = 0
     for it, c in enumerate(stages, 1):
-        if isinstance(c, list):                          # etapa generalizada (rehearsal/fusión)
+        if isinstance(c, list):                          # generalised stage (rehearsal / merged)
             items = list(bona)
             for st, frac in c:
                 pool = spoof_by[st]
@@ -230,7 +230,7 @@ def main():
                      f"{res['acc']:.4f}", f"{res['dev_eer']:.4f}", f"{tl:.4f}", f"{ta:.4f}"]); rf.flush()
         print(f"    -> ACER={res['acer']:.4f} AUC={res['auc']:.4f} dev_EER={res['dev_eer']:.4f}")
     curve.close(); rf.close()
-    print(f"DONE {tag}: {len(stages)} iters, {ep_acc} épocas")
+    print(f"DONE {tag}: {len(stages)} iters, {ep_acc} epochs")
 
 
 if __name__ == "__main__":

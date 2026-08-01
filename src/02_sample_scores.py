@@ -47,7 +47,7 @@ def write_scores(ds, split="train"):
 
 
 def validate_casia_fasd():
-    """S1 computado BAJO LAS ETIQUETAS VIEJAS (con HR_1 como ataque) debe señalar los HR_1.
+    """S1 computed UNDER THE OLD LABELS (HR_1 as attack) should flag the HR_1 frames.
     AUROC de (-S1_old) para detectar rows cuya etiqueta vieja != corregida."""
     X, y_corr, st_corr, paths = load("CASIA-FASD")
     old_lab = {}
@@ -99,9 +99,9 @@ if __name__ == "__main__":
     if ds in ("HQ-WMCA", "all"): write_scores("HQ-WMCA")
     if ds in ("CelebA-Spoof", "all"):
         try: write_scores("CelebA-Spoof")
-        except FileNotFoundError: print("(CelebA aún sin embeddings)")
+        except FileNotFoundError: print("(CelebA embeddings not extracted yet)")
     if ds in ("CASIA-FASD", "all", "validate"):
         try:
             write_scores("CASIA-FASD")
             validate_casia_fasd()
-        except FileNotFoundError: print("(CASIA-FASD aún sin embeddings)")
+        except FileNotFoundError: print("(CASIA-FASD embeddings not extracted yet)")

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-O8 — curriculum ADAPTATIVO por geometría: tras cada etapa se recomputan los ejes
+O8: geometry-ADAPTIVE curriculum. After each stage the axes are recomputed
 discriminantes con el MODELO ACTUAL (no el backbone congelado) y se elige el siguiente
-PAI por coseno máximo con el eje agregado de lo ya entrenado.
+and the next PAI is the one with the highest cosine to the aggregate of what is trained.
 
-Pregunta: ¿la geometría debe seguir al modelo o basta la congelada (O3)?
+Question: must the geometry follow the model, or is the frozen one enough (O3)?
 Mismo protocolo/salidas que ibt_generic (results_subtype.csv, method=IBT-daxisO8ad-sN).
 """
 import os, sys, csv, argparse, random
@@ -30,7 +30,7 @@ RES_CSV = os.path.join(RES_DIR, "results_subtype.csv")
 
 @torch.no_grad()
 def embed(model, items, tf, device, bs=64, limit=600, seed=0):
-    """Embeddings de la penúltima (avgpool) del modelo ACTUAL sobre un subsample."""
+    """Penultimate-layer (avgpool) embeddings of the CURRENT model over a subsample."""
     it = items if len(items) <= limit else random.Random(seed).sample(items, limit)
     feats = {}
     h = model.model.avgpool.register_forward_hook(lambda m, i, o: feats.__setitem__("f", o.flatten(1)))
@@ -159,9 +159,9 @@ def main():
             nxt = max(cos, key=cos.get)
             print(f"    [adaptivo] cos={ {k: round(v,3) for k,v in sorted(cos.items(), key=lambda kv:-kv[1])} } -> {nxt}")
             trained.append(nxt); left.remove(nxt)
-        # cuando left se vacía, la siguiente vuelta (it == len(trained)+1) es consolidación
+        # once left empties, the next pass is the consolidation stage
     curve.close(); rf.close()
-    print(f"DONE {tag}: {it} iters, {ep_acc} épocas · orden final: {trained}")
+    print(f"DONE {tag}: {it} iters, {ep_acc} epochs · final order: {trained}")
 
 
 if __name__ == "__main__":

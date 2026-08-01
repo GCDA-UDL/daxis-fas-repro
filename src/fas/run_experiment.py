@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Harness FAS v2 — entrena hasta N épocas y, en cada HITO {5,10,20,30,40,50}, guarda:
+FAS harness: trains up to N epochs and, at each MILESTONE, saves:
   - checkpoint (state_dict)            -> /mnt/d2/ibt26/checkpoints/<ds>_<model>_ep<N>.pth
-  - evaluación OFICIAL (ACER/AUC/EER)  -> /mnt/d2/ibt26/results/results.csv  (1 fila por hito)
-  - curva por época (train loss/acc)   -> /mnt/d2/ibt26/results/curves/<ds>_<model>.csv
+  - OFFICIAL evaluation (ACER/AUC/EER)  -> /mnt/d2/ibt26/results/results.csv  (1 fila por hito)
+  - per-epoch curve (train loss/acc)   -> /mnt/d2/ibt26/results/curves/<ds>_<model>.csv
 Usa class weights balanceados (arregla el desbalance, p.ej. UniAttackData+ 1:26).
 
 Ejemplos:
@@ -90,8 +90,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--model", default="resnet50")
-    ap.add_argument("--epochs", type=int, default=50, help="máximo de épocas")
-    ap.add_argument("--milestones", default="5,10,20,30,40,50", help="épocas donde guardar ckpt+eval")
+    ap.add_argument("--epochs", type=int, default=50, help="maximum number of epochs")
+    ap.add_argument("--milestones", default="5,10,20,30,40,50", help="epochs at which to save a checkpoint+eval")
     ap.add_argument("--batch_size", type=int, default=64)
     ap.add_argument("--lr", type=float, default=1e-4)
     ap.add_argument("--device", default="cuda:0")

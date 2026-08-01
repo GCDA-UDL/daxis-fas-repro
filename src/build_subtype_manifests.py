@@ -9,13 +9,13 @@ una columna `subtype` (identificador de la clase de ataque; 'live' para bonafide
 
 Datasets soportados (los que SÍ tienen subtipos):
   - CelebA-Spoof : desde metas/intra_test/*_label.json, campo [40] (10 tipos). 162k bonafide en train.
-  - OULU-NPU     : AccessType = último campo de la carpeta v_{live,spoof}_g{N}_{ses}_{user}_{AT}
+  - OULU-NPU     : AccessType is the last field of the folder v_{live,spoof}_g{N}_{ses}_{user}_{AT}
                    (1=real, 2=print1, 3=print2, 4=replay1, 5=replay2). Tiene dev OFICIAL.
   - SiW          : carpeta v_{live,spoof}_g{subj}-{sensor}-{tipo}-{medio}-{ses}
                    (tipo 1=live, 2=print, 3=replay); subtipo = tipo_medio (6 clases de ataque).
 
 NO soportados (sin subtipos utilizables):
-  - CASIA-CeFA   : el train de 4@1 tiene UN solo tipo de ataque y dev/test están anonimizados.
+  - CASIA-CeFA   : the 4@1 train split has a SINGLE attack type and dev/test are anonymised.
 
 Uso:  python build_subtype_manifests.py [celeba|oulu|siw|all]
 Salida: manifests/<dataset>_subtype.csv
@@ -49,7 +49,7 @@ def celeba():
     """Uses the COMPLETE copy (74 parts), the only one that ships the metas/ folder."""
     base = os.path.join(ROOT, "CelebA-Spoof", "_redownload", "CelebA_Spoof")
     metas = os.path.join(base, "metas", "intra_test")
-    assert os.path.isdir(metas), f"faltan metas en {metas} (¿copia incompleta?)"
+    assert os.path.isdir(metas), f"metas/ missing at {metas} (incomplete copy?)"
     rows = []
     for split, fn in [("train", "train_label.json"), ("test", "test_label.json")]:
         d = json.load(open(os.path.join(metas, fn)))
@@ -61,12 +61,12 @@ def celeba():
 
 def hqwmca():
     """HQ-WMCA (RGB): 10 very diverse PAIs (rigid/flexible masks, mannequin, paper, print, replay,
-    gafas, maquillaje, tatuaje, peluca) + bonafide. Frames ya extraídos en frames/<subtipo>/<video>/.
+    glasses, makeup, tattoo, wig) plus bonafide. Frames already extracted under frames/<subtype>/<video>/.
     NO hay split oficial -> se talla train/dev/test DISJUNTO POR SUJETO (campo 3 del nombre WMCA:
     1_01_<SUJETO>_...). 70/15/15. Todos los subtipos presentes en cada split (los de pocos subjects,
     e.g. Print with 3, may fall unevenly; acceptable for the within-dataset design."""
     base = os.path.join(ROOT, "HQ-WMCA", "frames")
-    assert os.path.isdir(base), f"no existe {base} (¿extracción pendiente?)"
+    assert os.path.isdir(base), f"{base} does not exist (frames not extracted yet?)"
     import random as _rnd
     # 1) collect every subject and assign each a split deterministically
     subj_of = lambda vid: vid.split("_")[2] if len(vid.split("_")) > 2 else vid
@@ -96,7 +96,7 @@ def hqwmca():
 def casia_surf():
     """CASIA-SURF: su protocolo OFICIAL ya es zero-shot cross-attack.
        Training = ataques 04/05/06 · Val y Testing = ataques 01/02/03 (no vistos en train).
-       El val oficial contiene los tipos no vistos -> la selección honesta está alineada con el test.
+       The official val split holds the unseen types, so honest selection is aligned con el test.
        The `color` (RGB) modality is used, for consistency with the rest of the benchmark."""
     base = os.path.join(ROOT, "CASIA-SURF", "Data-001", "Data")
     assert os.path.isdir(base), f"no existe {base}"
@@ -120,10 +120,10 @@ def casia_surf():
 
 def casia_fasd():
     """CASIA-FASD: the subtype comes from the video number in the filename (sNvVfF.png).
-    Estándar CASIA-FASD (12 vídeos/sujeto):
+    CASIA-FASD standard (12 videos per subject):
       real  = 1, 2, HR_1     warped = 3, 4, HR_2     cut = 5, 6, HR_3     replay = 7, 8, HR_4
-    OJO: la extracción metió TODOS los HR_* en spoof/, así que HR_1 (que es REAL) quedó etiquetado
-    como ataque (~10.4k frames). Aquí la etiqueta se deriva del nº de vídeo, NO de la carpeta,
+    NOTE: the export placed ALL HR_* videos in spoof/, so HR_1 (which is GENUINE) ended up etiquetado
+    labelled as an attack (~10.4k frames). Here the label comes from the video number, not the forpeta,
     lo que CORRIGE ese error. Se usan solo los ficheros sin prefijo (las variantes b*/f* aparecen
     only in train/live, undocumented, and would skew the balance)."""
     base = os.path.join(ROOT, "CASIA-FASD", "casia-fasd")

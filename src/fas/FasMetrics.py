@@ -1,13 +1,10 @@
 """
-Métricas FAS para el UniAttackData / Unified Physical-Digital Attack Detection Challenge.
+FAS metrics following the official challenge protocol (ISO/IEC 30107-3).
 
-╔══════════════════════════════════════════════════════════════════════════════╗
-║  AVISO                                                                          ║
-║  `evaluar_modelo` está DEPRECATED y produce métricas que NO coinciden con las   ║
-║  del organizador. Usa `evaluar_oficial` (modelo + loaders dev/test) o           ║
-║  `evaluar_oficial_desde_fichero` (fichero de predicción). Detalle del fallo y    ║
-║  reproducción: ../ablations_revision/DIAGNOSIS.md                               ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+WARNING: `evaluar_modelo` is DEPRECATED and produces metrics that do NOT match the
+challenge organisers'. Use `evaluar_oficial` (model plus dev/test loaders) or
+`evaluar_oficial_desde_fichero` (a prediction file) instead. The function names are kept in
+Spanish because published results reference them; the behaviour is documented here in English.
 """
 import warnings
 import torch
@@ -17,7 +14,7 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Protocolo official (helpers compartidos)
+# Official protocol (shared helpers)
 #
 # Convention: attack is the positive class. A higher `attack_score` means more likely an attack.
 # For a model whose class 0 is bonafide: attack_score = 1 - softmax[:, 0].
@@ -60,23 +57,23 @@ def _infer_attack_scores(modelo, dataloader, device="cuda"):
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Evaluador official (reproduce al organizador, ~1e-4)
+# Official evaluator (reproduces the organisers' numbers to ~1e-4)
 # ──────────────────────────────────────────────────────────────────────────────
 def evaluar_oficial(modelo, dev_loader, test_loader, device="cuda", verbose=True):
     """
-    Métricas FAS según el protocolo oficial del challenge (ISO/IEC 30107-3):
+    FAS metrics under the official challenge protocol (ISO/IEC 30107-3):
 
-      1. ATAQUE = clase positiva; score = P(ataque) = 1 - softmax[:, 0].
-      2. AUC sobre TEST (all las families de ataque juntas, bonafide vs ataque).
-      3. Umbral tau = EER calculado en el split de DESARROLLO (dev_loader).
-      4. APCER/BPCER/ACER sobre TEST con ese tau fijo.
-      5. El EER reportado es el de dev (define tau), no el de test.
+      1. ATTACK is the positive class; score = P(attack) = 1 - softmax[:, 0].
+      2. AUC over TEST (all attack families pooled, bonafide against attack).
+      3. Threshold tau = the EER computed on the DEVELOPMENT split (dev_loader).
+      4. APCER/BPCER/ACER over TEST at that fixed tau.
+      5. The reported EER is the dev one (which defines tau), not the test EER.
 
-    Parámetros:
-        modelo:      red entrenada (clase 0 = bonafide).
-        dev_loader:  loader de validación (define el umbral).
-        test_loader: loader de test (métricas finales).
-    Retorna: dict(auc, acer, apcer, bpcer, acc, dev_eer).
+    Args:
+        modelo:      trained network (class 0 = bonafide).
+        dev_loader:  validation loader (sets the threshold).
+        test_loader: test loader (final metrics).
+    Returns: dict(auc, acer, apcer, bpcer, acc, dev_eer).
     """
     dev_y, dev_s = _infer_attack_scores(modelo, dev_loader, device)
     test_y, test_s = _infer_attack_scores(modelo, test_loader, device)
@@ -95,15 +92,10 @@ def evaluar_oficial(modelo, dev_loader, test_loader, device="cuda", verbose=True
 
 def evaluar_oficial_desde_fichero(pred_file, val_protocol, test_protocol, verbose=True):
     """
-    Igual que `evaluar_oficial` pero a partir de un fichero de predicción
-    `<ruta> <score>` que contiene rows de val y de test (formato de submission).
+    Same as `evaluar_oficial` but starting from a prediction file rather than a model.
 
-        - score del fichero = se interpreta como score de ataque (mayor ⇒ ataque).
-        - val_protocol / test_protocol: ficheros `<ruta> a_b_c` con la verdad.
-          a==0 bonafide, a==1 ataque físico, a==2 ataque digital.
-
-    Reproduce los resultados del organizador a ~1e-4. Ver
-    ../ablations_revision/fas_official_metrics.py para la versión batch + CSV.
+    The label code a_b_c encodes: a==0 bonafide, a==1 physical attack, a==2 digital attack.
+    See the batch/CSV variant in the analysis scripts.
     """
     import os
 
@@ -150,26 +142,21 @@ def evaluar_oficial_desde_fichero(pred_file, val_protocol, test_protocol, verbos
 # ──────────────────────────────────────────────────────────────────────────────
 def evaluar_modelo(modelo, dataloader, num_clases, device="cuda", verbose=True, save_file=None):
     """
-    ⚠️  DEPRECATED — ESTÁ EQUIVOCADA. NO coincide con la métrica oficial del organizador.
+    DEPRECATED and INCORRECT. It does not match the organisers' official metric.
 
-    Usa en su lugar `evaluar_oficial(modelo, dev_loader, test_loader)`.
+    Why it is wrong (reproduced over 755 files):
+      1. THRESHOLD: it picks the threshold on the same split it evaluates. The official
+         protocol fixes the threshold at the EER of the DEVELOPMENT split and applies it to test.
+      2. SUBSET: it evaluates whatever dataloader it is given (validation, sometimes filtered by
+         attack family) rather than the full test set with all families pooled, so the
+         population differs.
 
-    Por qué está mal (ver ../ablations_revision/DIAGNOSIS.md, reproducido en 755 ficheros):
-      1. UMBRAL IN-SAMPLE: calcula el EER (`best_threshold`) sobre el MISMO conjunto que
-         evalúa. El protocolo oficial fija el umbral con el EER del split de DESARROLLO
-         (val) y lo aplica a test. → ACER optimista y no comparable. (causa principal)
-      2. SUBCONJUNTO: evalúa el dataloader que se le pase (val, a veces filtrado por
-         familia), no el TEST completo con all las families juntas. → población distinta.
-      3. EER REPORTADO: devuelve el EER del propio conjunto evaluado, no el de val.
-      4. POLARIDAD/CONVENCIÓN: toma `probs[:, 0]` como "P(bonafide)" y trata bonafide como
-         positivo, pero esa columna se comporta como score de ATAQUE (anti-correlada con
-         bonafide). → APCER y BPCER quedan intercambiados respecto al significado oficial.
+    Kept only so that previously published numbers can be reproduced.
 
-    Se conserva el cuerpo original intacto únicamente para reproducir métricas históricas.
     """
     warnings.warn(
-        "evaluar_modelo está DEPRECATED y da métricas incorrectas (umbral in-sample, "
-        "subset erróneo, polaridad invertida). Usa evaluar_oficial / "
+        "evaluar_modelo is DEPRECATED and returns incorrect metrics (in-sample threshold, "
+        "wrong subset, inverted polarity). Use evaluar_oficial / "
         "evaluar_oficial_desde_fichero. Ver ablations_revision/DIAGNOSIS.md.",
         DeprecationWarning,
         stacklevel=2,
@@ -177,7 +164,7 @@ def evaluar_modelo(modelo, dataloader, num_clases, device="cuda", verbose=True, 
 
     # validate the number of classes
     if num_clases not in [2, 3]:
-        raise ValueError("La función soporta solo clasificación binaria o ternaria (2 o 3 clases).")
+        raise ValueError("This function supports only binary or ternary classification (2 or 3 classes).")
     modelo.to(device)
     modelo.eval()
     total_loss = 0.0
@@ -193,21 +180,21 @@ def evaluar_modelo(modelo, dataloader, num_clases, device="cuda", verbose=True, 
             etiquetas = etiquetas.to(device)
             # Forward del modelo
             logits = modelo(entradas)
-            # Cálculo de loss (entropía cruzada, suma sobre el batch)
+            # loss (cross-entropy, summed over the batch)
             loss = F.cross_entropy(logits, etiquetas, reduction='sum')
             total_loss += loss.item()
             total_samples += etiquetas.size(0)
             # Probabilidad de clase 0 (bonafide) usando softmax
             probabilidades = F.softmax(logits, dim=1)
             prob_bonafide = probabilidades[:, 0]  # probabilidad predicha de ser bonafide
-            # Almacenar para cálculo global
+            # accumulate for the global computation
             all_probs.append(prob_bonafide.cpu().numpy())
             all_labels.append(etiquetas.cpu().numpy())
 
     # Concatenar todos los resultados
     all_probs = np.concatenate(all_probs)
     all_labels = np.concatenate(all_labels)
-    # Pérdida promedio en todo el conjunto
+    # average loss over the whole set
     perdida_promedio = total_loss / total_samples
 
     # Construir labels binarias: 1 = bonafide (clase 0), 0 = attack (clase != 0)
@@ -216,7 +203,7 @@ def evaluar_modelo(modelo, dataloader, num_clases, device="cuda", verbose=True, 
     # # Predicciones binarizadas con threshold 0.5 sobre probabilidad bonafide
     # y_pred = (all_probs >= 0.5).astype(np.int32)
 
-     # Calcular threshold óptimo (mínima diferencia entre FPR y FNR)
+     # optimal threshold (minimum |FPR - FNR|)
     fpr, tpr, thresholds = roc_curve(y_true, all_probs, pos_label=1)
     fnr = 1 - tpr
     idx_eer = np.nanargmin(np.abs(fnr - fpr))
@@ -233,17 +220,17 @@ def evaluar_modelo(modelo, dataloader, num_clases, device="cuda", verbose=True, 
     FN = np.sum((y_pred == 0) & (y_true == 1))
     TN = np.sum((y_pred == 0) & (y_true == 0))
 
-    # Precisión y recall (evitando división por cero)
+    # precision and recall (avoiding division by zero)
     precision = TP / (TP + FP) if (TP + FP) > 0 else 0.0
     recall = TP / (TP + FN) if (TP + FN) > 0 else 0.0
 
-    # AUC (área bajo la curva ROC) respecto a bonafide vs attack
+    # AUC (area under the ROC) for bonafide vs attack
     auc = roc_auc_score(y_true, all_probs)
 
-    # EER (Equal Error Rate) cálculo mediante la curva ROC
+    # EER computed from the ROC curve
     fpr, tpr, thresholds = roc_curve(y_true, all_probs, pos_label=1)
     fnr = 1 - tpr
-    # Índice donde |FPR - FNR| es mínimo (aproximación al punto EER)
+    # index where |FPR - FNR| is minimal (approximates the EER point)
     idx_eer = np.nanargmin(np.abs(fnr - fpr))
     eer = (fpr[idx_eer] + fnr[idx_eer]) / 2  # valor de EER
 
@@ -252,27 +239,27 @@ def evaluar_modelo(modelo, dataloader, num_clases, device="cuda", verbose=True, 
     bpcer = FN / (TP + FN) if (TP + FN) > 0 else 0.0  # bonafide clasificados como ataque / total bonafide
     acer = (apcer + bpcer) / 2.0
 
-    # Imprimir métricas si verbose
+    # print metrics when verbose
     if verbose:
-        print(f"Precisión: {precision:.4f}")
+        print(f"Precision: {precision:.4f}")
         print(f"Recall: {recall:.4f}")
-        print(f"Pérdida promedio: {perdida_promedio:.4f}")
+        print(f"Average loss: {perdida_promedio:.4f}")
         print(f"AUC: {auc:.4f}")
         print(f"EER: {eer:.4f}")
         print(f"APCER: {apcer:.4f}")
         print(f"BPCER: {bpcer:.4f}")
         print(f"ACER: {acer:.4f}")
 
-    # Guardar resultados en CSV si se indicó una ruta
+    # write results to CSV if a path was given
     if save_file:
         with open(save_file, "w", newline="") as f:
             # Fila de encabezados
-            f.write("Precisión,Recall,Pérdida promedio,AUC,EER,APCER,BPCER,ACER\n")
+            f.write("Precision,Recall,AverageLoss,AUC,EER,APCER,BPCER,ACER\n")
             # Fila de valores (formato decimal con 4 cifras significativas)
             f.write(f"{precision:.4f},{recall:.4f},{perdida_promedio:.4f},{auc:.4f},"
                     f"{eer:.4f},{apcer:.4f},{bpcer:.4f},{acer:.4f}\n")
 
-    # Devolver un diccionario con las métricas
+    # return the metrics as a dict
     return {
         "precision": precision,
         "recall": recall,

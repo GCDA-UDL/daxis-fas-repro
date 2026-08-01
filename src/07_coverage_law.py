@@ -53,7 +53,7 @@ def main():
     all_idx = list(range(len(ks)))
     picks = json.load(open(os.path.join(ART, "orders.json")))[ds]["picks"]
 
-    # --- qué subtypes entrena each label de método del bloque B ---
+    # --- which subtypes each block-B method label trains on ---
     sets = {}
     for m in (2, 4, 6, 8):
         sets[f"std-L3top{m}A"] = picks["L3_topm_aligned"][str(m)]
@@ -68,7 +68,7 @@ def main():
     cells = defaultdict(list)
     for r in csv.DictReader(open(RES)):
         cells[r["method"]].append(r)
-    # standard (10 clases) desde la campaña principal, mismo protocolo
+    # standard (all classes) from the main campaign, same protocol
     for r in csv.DictReader(open(RES_MAIN)):
         if r["dataset"] == ds and r["model"] == "resnet50" and r["method"].startswith("standard-s"):
             cells[r["method"]].append(r)
@@ -108,7 +108,7 @@ def main():
                      "spearman_r": float(rs), "spearman_p": float(ps)}
         print(f"  {name:26s} Pearson r={r:+.3f} (p={p:.2e})   Spearman r={rs:+.3f}")
 
-    # control clave: ¿la coverage aporta MÁS que el simple nº de clases?
+    # key control: does coverage add MORE than the class count alone?
     try:
         import numpy.linalg as la
         A = np.column_stack([np.ones(len(pts)), mm, cov])

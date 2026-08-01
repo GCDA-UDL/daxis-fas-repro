@@ -56,14 +56,14 @@ def analyze(ds, bb, shard_seed=0, canonical=False):
 
 def main():
     ds = sys.argv[1] if len(sys.argv) > 1 else "HQ-WMCA"
-    # --- canónico: resnet50, shard seed 0 ---
+    # --- canonical setting: resnet50, shard seed 0 ---
     R = analyze(ds, "resnet50", 0, canonical=True)
     assert R is not None, "missing embeddings resnet50 (run step 00 first)"
     # explicit str(): numpy.str_ does not serialise cleanly to JSON and breaks consumers
     ks, C, axes = [str(k) for k in R["ks"]], R["C"], {str(k): v for k, v in R["axes"].items()}
     d0 = load(ds, "resnet50"); X, y, st, su = d0; Xs = standardize(X)
     fc = freq_counts(st, y)
-    start = max(fc, key=fc.get)                     # el más frecuente (spec usuario)
+    start = max(fc, key=fc.get)                     # the most frequent one
 
     orders = {
         "O1_aligned_first": order_aligned_first(ks, C, desc=True),
@@ -90,7 +90,7 @@ def main():
         "start_most_frequent": start,
     }
     # stability: Kendall tau of the O1 ranking across variants (backbone / shard seed does not affect
-    # a los axes con mu_live global, pero sí al C_daxis; comparamos ambos caminos)
+    # the global-mean axes, but it does affect C_daxis; both paths are compared)
     stab = {}
     o1_c = orders["O1_aligned_first"]
     if "C_daxis" in R:

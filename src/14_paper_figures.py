@@ -51,7 +51,7 @@ def cells_for(ds, blob):
 
 
 def hqwmca_cells():
-    """HQ-WMCA usó el diseño por heurísticas (bloques B/F) — se reconstruye desde orders.json."""
+    """HQ-WMCA used the heuristic design (blocks B/F); rebuilt from the saved analysis."""
     d = json.load(open(os.path.join(ART, "coverage_law_HQ-WMCA.json")))
     return [(p["coverage"], p["m"], p["auc"], p["acer"]) for p in d["points"]]
 

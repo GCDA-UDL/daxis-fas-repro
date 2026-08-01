@@ -50,7 +50,7 @@ def cov_of(ks, C, S):
 
 
 def waterfill(sel, cnt, budget):
-    """Reparte `budget` imágenes entre `sel` lo más equitativamente posible, sin pasarse de lo
+    """Spreads `budget` images across `sel` as evenly as possible, without exceeding what
     disponible en cada clase. Devuelve {clase: n} o None si entre all no llegan al presupuesto."""
     if not sel: return None
     if sum(cnt[k] for k in sel) < budget: return None
@@ -72,7 +72,7 @@ def waterfill(sel, cnt, budget):
 
 
 def pick(strategy, ks, C, cnt, budget, seed=0):
-    """Elige clases hasta poder cubrir el presupuesto; devuelve la asignación por clase."""
+    """Picks classes until the budget can be covered; returns the per-class allocation."""
     avail = [k for k in ks if cnt.get(k, 0) > 0]
     if strategy == "rand":
         rng = random.Random(seed); order = avail[:]; rng.shuffle(order)

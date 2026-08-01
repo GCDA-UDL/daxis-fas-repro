@@ -40,7 +40,7 @@ from config import ART, RES_DAXIS, RES_CURRICULUM, FIG_DIR, OUT, FAS_DATA_ROOT, 
 
 
 def auto_eps(X, k=10, q=90):
-    """eps de DBSCAN por el codo de la distancia al k-ésimo vecino (heurística estándar)."""
+    """DBSCAN eps from the k-th nearest-neighbour distance elbow (standard heuristic)."""
     nn = NearestNeighbors(n_neighbors=k).fit(X)
     d, _ = nn.kneighbors(X)
     return float(np.percentile(d[:, -1], q))
@@ -53,7 +53,7 @@ def main():
     X = z["X"].astype(np.float64); y = z["y"].astype(int); st = z["subtype"].astype(str)
     Xs = standardize(X)
 
-    # axes discriminantes + matriz de cosenos (la geometría del método)
+    # discriminant axes plus cosine matrix (the geometry of the method)
     A = all_axes(Xs, y, st)
     ks, C = cosine_matrix(A)
     ks = [str(k) for k in ks]
@@ -85,7 +85,7 @@ def main():
         "ARI_vs_PAI": float(adjusted_rand_score(lab_true, db.labels_)),
         "NMI_vs_PAI": float(normalized_mutual_info_score(lab_true, db.labels_)),
     }
-    # ¿al menos separa live vs spoof?
+    # does it at least separate live from spoof?
     out["dbscan_samples"]["ARI_vs_binary"] = float(
         adjusted_rand_score((stsub != "live").astype(int), db.labels_))
 

@@ -4,7 +4,7 @@ output: /mnt/d1/data/HQ-WMCA/frames/<Bonafide|SUBTIPO>/<video>/frameNNN.jpg"""
 import os, sys, cv2
 SRC = "/mnt/d1/data/HQ-WMCA/HQ-WMCA-RGB/HQ-WMCA-RGB"
 DST = "/mnt/d1/data/HQ-WMCA/frames"
-N = 12  # frames por vídeo
+N = 12  # frames per video
 jobs = []
 for cat in ("Bonafide", "Impersonation", "Obfuscation"):
     d = os.path.join(SRC, cat)
@@ -16,7 +16,7 @@ for cat in ("Bonafide", "Impersonation", "Obfuscation"):
             sd = os.path.join(d, st)
             if os.path.isdir(sd):
                 jobs += [(st, os.path.join(sd, f)) for f in os.listdir(sd) if f.endswith(".mov")]
-print(f"{len(jobs)} vídeos a procesar", flush=True)
+print(f"{len(jobs)} videos to process", flush=True)
 ok = fail = 0
 for i, (st, path) in enumerate(jobs, 1):
     name = os.path.splitext(os.path.basename(path))[0]

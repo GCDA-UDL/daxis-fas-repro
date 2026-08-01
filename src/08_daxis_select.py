@@ -26,7 +26,7 @@ os.makedirs(MAN_OUT, exist_ok=True)
 
 
 def greedy_coverage(ks, C, m):
-    """Facility location: en cada paso añade el eje que más sube mean_k max_{j∈S} cos(d_k,d_j)."""
+    """Facility location: each step adds the axis that most increases mean_k max_{j in S} cos(d_k,d_j)."""
     n = len(ks)
     sel, best = [], np.full(n, -np.inf)
     for _ in range(m):
