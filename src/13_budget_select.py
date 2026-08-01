@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
 """
-SELECCIÓN A IGUAL PRESUPUESTO DE IMÁGENES + VARIANTES PONDERADAS DE COBERTURA.
+SELECTION AT AN EQUAL IMAGE BUDGET, plus weighted coverage variants.
 
-Corrige un CONFUNDIDO de los bloques B/F: comparar estrategias "a igual número de clases" no es
-justo, porque cada conjunto arrastra distinta cantidad de datos. En HQ-WMCA m=4, el pick alineado
-traía 11.832 imágenes y el de cobertura 6.144 (elegía Wig=624 y Tattoo=576, las clases más
-pequeñas). DAXIS-select perdió por 2.3 AUC teniendo MÁS cobertura -> el déficit de datos se comía
-la ventaja angular. Aquí el presupuesto de IMÁGENES se fija y solo cambia CÓMO se reparte.
+Fixes a confound in the earlier blocks: comparing strategies at an equal NUMBER OF CLASSES is not
+fair, because each subset carries a different amount of data. On HQ-WMCA at m=4 the aligned pick
+brought 11,832 images and the coverage pick 6,144 (it chose Wig=624 and Tattoo=576, the smallest
+classes). Coverage selection lost by 2.3 AUC while holding MORE coverage - the data deficit ate
+the angular advantage. Here the IMAGE budget is fixed and only its allocation varies.
 
-Estrategias (todas gastan el mismo nº de imágenes de ataque):
-  cov      cobertura pura (greedy facility-location)         <- la que falló
-  cb       coste-beneficio: greedy sobre  dCobertura / coste  <- knapsack submodular clásico
-  wcov     cobertura PONDERADA por tamaño efectivo: dCob * log(1+n_k)
-  big      las clases más grandes (control: solo volumen de datos)
-  rand     clases al azar (control)
-Reparto interno: water-filling (equitativo, limitado por disponibilidad) para gastar el presupuesto.
+Strategies (all spend the same number of attack images):
+  cov      pure coverage (greedy facility location)
+  cb       cost-benefit: greedy on  dCoverage / cost   <- the classic submodular knapsack form
+  wcov     coverage WEIGHTED by effective size: dCov * log(1+n_k)
+  big      the largest classes (control: data volume only)
+  rand     random classes (control)
+Allocation within a subset: water-filling (as even as availability allows).
 
-Uso: /opt/conda/bin/python 13_budget_select.py [HQ-WMCA]
-Genera manifiestos con submuestreo exacto por clase + jobs (bloque H-budget).
+Usage: python 13_budget_select.py [HQ-WMCA]
 """
 import os, sys, csv, json, random
 import numpy as np
@@ -27,7 +26,7 @@ from config import ART, RES_DAXIS, RES_CURRICULUM, FIG_DIR, OUT, FAS_DATA_ROOT, 
 MAN_OUT = os.path.join(HERE, "manifests")
 MAN_SRC = os.path.join(HERE, "..", "fas_benchmark", "manifests")
 os.makedirs(MAN_OUT, exist_ok=True)
-BUDGETS = [4000, 8000, 16000]        # imágenes de ATAQUE totales
+BUDGETS = [4000, 8000, 16000]        # total ATTACK images
 SEEDS = 3
 
 
@@ -52,7 +51,7 @@ def cov_of(ks, C, S):
 
 def waterfill(sel, cnt, budget):
     """Reparte `budget` imágenes entre `sel` lo más equitativamente posible, sin pasarse de lo
-    disponible en cada clase. Devuelve {clase: n} o None si entre todas no llegan al presupuesto."""
+    disponible en cada clase. Devuelve {clase: n} o None si entre all no llegan al presupuesto."""
     if not sel: return None
     if sum(cnt[k] for k in sel) < budget: return None
     alloc = {k: 0 for k in sel}
@@ -88,7 +87,7 @@ def pick(strategy, ks, C, cnt, budget, seed=0):
             sel.append(k)
             if sum(cnt[c] for c in sel) >= budget: break
         return sel
-    # greedys sobre cobertura
+    # coverage-based greedy strategies
     sel, best = [], np.full(len(ks), -np.inf)
     while True:
         cand = [k for k in avail if k not in sel]
@@ -97,9 +96,9 @@ def pick(strategy, ks, C, cnt, budget, seed=0):
         for k in cand:
             j = ks.index(k)
             g = float(np.mean(np.maximum(best, C[:, j]))) - (float(np.mean(best)) if sel else -1.0)
-            if strategy == "cb":     score = g / max(1.0, cnt[k])          # ganancia por imagen
-            elif strategy == "wcov": score = g * np.log1p(cnt[k])          # ponderada por tamaño
-            else:                    score = g                            # cobertura pura
+            if strategy == "cb":     score = g / max(1.0, cnt[k])          # gain per image
+            elif strategy == "wcov": score = g * np.log1p(cnt[k])          # weighted by class size
+            else:                    score = g                            # pure coverage
             gains.append((score, k))
         k = max(gains)[1]
         sel.append(k); best = np.maximum(best, C[:, ks.index(k)])
@@ -135,22 +134,22 @@ def main():
     ks, C = load_axes(ds)
     cnt = counts(ds)
     jobs, meta = [], {}
-    print(f"== presupuesto FIJO de imágenes [{ds}] ==")
+    print(f"== FIXED image budget [{ds}] ==")
     for B in BUDGETS:
-        print(f"\n  --- presupuesto {B} imágenes de ataque ---")
+        print(f"\n  --- budget of {B} attack images ---")
         for strat in ["cov", "cb", "wcov", "big", "rand"]:
             sel = pick(strat, ks, C, cnt, B, seed=0)
             alloc = waterfill(sel, cnt, B)
             if alloc is None:
-                print(f"    {strat:5s}: no alcanza el presupuesto, omitido"); continue
+                print(f"    {strat:5s}: cannot reach the budget, skipped"); continue
             cv = cov_of(ks, C, sel)
             tag = f"H{B}{strat}"
-            # dedupe: si otra estrategia ya produjo EXACTAMENTE el mismo reparto, no re-entrenamos
+            # dedupe: if another strategy produced EXACTLY the same allocation, do not retrain
             sig_alloc = tuple(sorted(alloc.items()))
             dup = next((t for t, mm in meta.items() if mm["budget"] == B
                         and tuple(sorted(mm["alloc"].items())) == sig_alloc), None)
             if dup:
-                print(f"    {strat:5s} == {meta[dup]['strategy']} (mismo reparto) -> reutiliza {dup}")
+                print(f"    {strat:5s} == {meta[dup]['strategy']} (same allocation) -> reuses {dup}")
                 meta[tag] = {"budget": B, "strategy": strat, "duplicate_of": dup,
                              "subset": sel, "alloc": alloc, "coverage": cov_of(ks, C, sel),
                              "n_imgs": sum(alloc.values())}

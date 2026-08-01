@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-D3 (retro, sin GPU) — ¿el OLVIDO catastrófico se explica por la GEOMETRÍA?
+Does the geometry EXPLAIN the catastrophic forgetting measured in the curriculum runs?
 
-Para cada transición del curriculum en las curvas YA guardadas (IBT-freq/reverse/... de
-HQ-WMCA y CelebA), correlaciona:
-    caída de AUC al entrar el PAI k   vs   ángulo(eje_k, eje agregado de lo ya entrenado)
-Si correlaciona, el mecanismo que medimos (olvido, hasta -30 AUC) queda EXPLICADO por la
-geometría axial -> resultado mecanístico, coste cero.
+Each time a curriculum introduces a new attack type the AUC tends to drop. This correlates, over
+the transitions already recorded on disk, the cosine between the incoming axis and the aggregate
+direction of what is already trained against the AUC change at that step.
 
-Corre en /opt/conda/bin/python (3.13).
+Costs no GPU time: it reads the per-iteration curves that the training runs already wrote.
+
+Usage: python 06_retro_forgetting.py [HQ-WMCA]
 """
 import os, sys, csv, glob, json
 import numpy as np
@@ -56,19 +56,19 @@ def main():
                     pts.append((cos, d, os.path.basename(f), sub, i + 1))
             seq.append((sub, auc))
     if not pts:
-        print(f"sin transiciones utilizables (curvas en {CURVES}?)"); return
+        print(f"sin transitions utilizables (curvas en {CURVES}?)"); return
     cos = np.array([p[0] for p in pts]); dl = np.array([p[1] for p in pts])
     pr = pearsonr(cos, dl); sp = spearmanr(cos, dl)
-    print(f"== D3 olvido vs geometría [{ds}] ==")
-    print(f"  n transiciones = {len(pts)} (de {len(files)} curvas)")
+    print(f"== D3 forgetting vs geometry [{ds}] ==")
+    print(f"  n transitions = {len(pts)} (de {len(files)} curvas)")
     print(f"  cos(eje_entrante, agregado_previo) vs ΔAUC:")
     print(f"    Pearson  r={pr[0]:+.3f}  p={pr[1]:.2e}")
     print(f"    Spearman r={sp[0]:+.3f}  p={sp[1]:.2e}")
-    print(f"  interpretación: r>0 ⇒ cuanto MÁS alineado entra el PAI, MENOS cae el AUC (olvido geométrico)")
+    print(f"  reading: r>0 means the MORE aligned the incoming PAI, the LESS the AUC drops")
     lo = dl[cos < np.median(cos)]; hi = dl[cos >= np.median(cos)]
-    print(f"  ΔAUC medio | entrantes poco alineados: {lo.mean():+.3f}  · muy alineados: {hi.mean():+.3f}")
+    print(f"  ΔAUC medio | poorly aligned entrants: {lo.mean():+.3f}  · well aligned: {hi.mean():+.3f}")
     worst = sorted(pts, key=lambda p: p[1])[:8]
-    print("  peores caídas:")
+    print("  largest drops:")
     for c, d, f, s, i in worst:
         print(f"    ΔAUC={d:+.3f} cos={c:+.3f} {s:14s} iter{i:2d} {f[:52]}")
     json.dump({"n": len(pts), "pearson_r": pr[0], "pearson_p": pr[1],
@@ -88,9 +88,9 @@ def main():
         ax.set_ylabel("ΔAUC en la transición")
         ax.set_title(f"{ds}: olvido vs alineamiento angular (r={pr[0]:+.2f})")
         fig.tight_layout(); fig.savefig(os.path.join(FIG_DIR, f"d3_forgetting_{ds}.png".replace("+", "plus")), dpi=130)
-        print(f"  figura -> artifacts/d3_forgetting_{ds}.png")
+        print(f"  figure -> artifacts/d3_forgetting_{ds}.png")
     except Exception as e:
-        print(f"  (figura no generada: {e})")
+        print(f"  (figure not generated: {e})")
 
 
 if __name__ == "__main__":

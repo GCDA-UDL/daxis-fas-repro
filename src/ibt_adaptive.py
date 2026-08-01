@@ -145,7 +145,7 @@ def main():
         print(f"    -> ACER={res['acer']:.4f} AUC={res['auc']:.4f} dev_EER={res['dev_eer']:.4f}")
         if name == "ALL": break
         if left:
-            # ADAPTATIVO: ejes con el modelo ACTUAL sobre subsamples de live + candidatos + entrenados
+            # ADAPTATIVO: axes con el modelo ACTUAL sobre subsamples de live + candidatos + entrenados
             groups = {"live": bona}
             groups.update({k: spoof_by[k] for k in set(left) | set(trained)})
             Xs, ys, sts = [], [], []

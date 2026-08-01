@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
-LEY DE COBERTURA ANGULAR — ¿por qué 'alineado' gana con presupuesto pequeño y 'diverso' con grande?
+THE ANGULAR COVERAGE LAW - why does 'aligned' win at a small budget and 'diverse' at a large one?
 
-Hipótesis: ni el alineamiento ni la dispersión son la variable causal. Lo que predice el
-rendimiento es la COBERTURA: que cada clase de test tenga algún eje entrenado CERCA.
+Hypothesis: neither alignment nor dispersion is the causal variable. What predicts performance is
+COVERAGE: whether every test class has some trained axis NEARBY.
 
-  cov(S) = mean_k  max_{j in S} cos(d_k, d_j)        (k = todas las clases de test)
+  cov(S) = mean_k  max_{j in S} cos(d_k, d_j)        (k ranges over all test classes)
 
-Explica el cruce observado: con m=2 el pick 'diverso' (max-min) elige outliers que cubren mal
-el grueso (AUC 81.5); con m=8 la dispersión ya implica cobertura (99.85).
+This explains the observed crossover: at m=2 the 'diverse' pick (max-min) chooses outliers that
+cover the bulk poorly (AUC 81.5); at m=8 dispersion already implies coverage (99.85).
 
-Test SIN GPU: cada celda del bloque B (L1/L2/L3, distintos subconjuntos entrenados) aporta un par
-(cobertura, AUC/ACER medido). Correlación sobre esas celdas.
+Tested WITHOUT a GPU: every cell of block B (L1/L2/L3, different trained subsets) contributes one
+(coverage, measured AUC/ACER) pair, and the law is a regression over those cells.
 
-Uso: /opt/conda/bin/python 07_coverage_law.py [HQ-WMCA]
-Salida: artifacts/coverage_law_<ds>.json + figura.
+Usage: python 07_coverage_law.py [HQ-WMCA]
+Output: artifacts/coverage_law_<ds>.json plus a figure.
 """
 import os, sys, csv, json, re
 import numpy as np
@@ -34,7 +34,7 @@ def load_axes(ds):
 
 
 def val_selected(rows):
-    """Selección honesta: la iteración con menor dev_eer."""
+    """Honest selection: the iteration with the lowest dev EER."""
     if not rows: return None
     b = min(rows, key=lambda r: float(r["dev_eer"]))
     return float(b["auc"]) * 100, float(b["acer"]) * 100
@@ -53,7 +53,7 @@ def main():
     all_idx = list(range(len(ks)))
     picks = json.load(open(os.path.join(ART, "orders.json")))[ds]["picks"]
 
-    # --- qué subtipos entrena cada etiqueta de método del bloque B ---
+    # --- qué subtypes entrena each label de método del bloque B ---
     sets = {}
     for m in (2, 4, 6, 8):
         sets[f"std-L3top{m}A"] = picks["L3_topm_aligned"][str(m)]
@@ -64,7 +64,7 @@ def main():
     sets["std-L1drop"] = [k for k in ks if k != picks["L1_redundant_drop"]]
     sets["std-L2drop"] = [k for k in ks if k != picks["L2_outlier_drop"]]
 
-    # --- medir cada celda ---
+    # --- medir each celda ---
     cells = defaultdict(list)
     for r in csv.DictReader(open(RES)):
         cells[r["method"]].append(r)
@@ -73,7 +73,7 @@ def main():
         if r["dataset"] == ds and r["model"] == "resnet50" and r["method"].startswith("standard-s"):
             cells[r["method"]].append(r)
     for s in range(5):
-        sets[f"standard-s{s}"] = ks[:]     # entrena todas
+        sets[f"standard-s{s}"] = ks[:]     # entrena all
 
     pts = []
     for meth, rows in cells.items():
@@ -91,24 +91,24 @@ def main():
                     "mean_cos_within": mean_cos, "auc": v[0], "acer": v[1]})
 
     if len(pts) < 5:
-        print(f"solo {len(pts)} celdas completas; espera a que avance el bloque B"); return
+        print(f"solo {len(pts)} cells completas; espera a que avance el bloque B"); return
 
     cov = np.array([p["coverage"] for p in pts]); auc = np.array([p["auc"] for p in pts])
     acer = np.array([p["acer"] for p in pts]); mm = np.array([p["m"] for p in pts])
     within = np.array([p["mean_cos_within"] for p in pts])
 
     out = {"n_cells": len(pts)}
-    print(f"== LEY DE COBERTURA [{ds}] · {len(pts)} celdas ==")
-    for name, x, yv, ylab in [("cobertura -> AUC", cov, auc, "AUC"),
-                              ("cobertura -> ACER", cov, acer, "ACER"),
-                              ("nº clases m -> AUC", mm, auc, "AUC"),
-                              ("alineam. interno -> AUC", within, auc, "AUC")]:
+    print(f"== COVERAGE LAW [{ds}] · {len(pts)} cells ==")
+    for name, x, yv, ylab in [("coverage -> AUC", cov, auc, "AUC"),
+                              ("coverage -> ACER", cov, acer, "ACER"),
+                              ("n classes m -> AUC", mm, auc, "AUC"),
+                              ("within-set alignment -> AUC", within, auc, "AUC")]:
         r, p = pearsonr(x, yv); rs, ps = spearmanr(x, yv)
         out[name] = {"pearson_r": float(r), "pearson_p": float(p),
                      "spearman_r": float(rs), "spearman_p": float(ps)}
         print(f"  {name:26s} Pearson r={r:+.3f} (p={p:.2e})   Spearman r={rs:+.3f}")
 
-    # control clave: ¿la cobertura aporta MÁS que el simple nº de clases?
+    # control clave: ¿la coverage aporta MÁS que el simple nº de clases?
     try:
         import numpy.linalg as la
         A = np.column_stack([np.ones(len(pts)), mm, cov])
@@ -120,11 +120,11 @@ def main():
         ss0 = 1 - ((auc - A0 @ b0) ** 2).sum() / ((auc - auc.mean()) ** 2).sum()
         out["r2_m_only"] = float(ss0); out["r2_m_plus_cov"] = float(ss)
         out["beta_coverage"] = float(beta[2])
-        print(f"  R2(solo m)={ss0:.3f}  ->  R2(m + cobertura)={ss:.3f}   (beta_cov={beta[2]:+.2f})")
+        print(f"  R2(m only)={ss0:.3f}  ->  R2(m + coverage)={ss:.3f}   (beta_cov={beta[2]:+.2f})")
     except Exception as e:
-        print(f"  (regresión no disponible: {e})")
+        print(f"  (regression unavailable: {e})")
 
-    print("\n  celdas (m, cobertura, AUC, ACER):")
+    print("\n  cells (m, coverage, AUC, ACER):")
     for p in sorted(pts, key=lambda p: (p["m"], p["base"])):
         print(f"    {p['base']:16s} m={p['m']:2d} cov={p['coverage']:+.3f} AUC={p['auc']:6.2f} ACER={p['acer']:5.2f}")
 
@@ -137,17 +137,17 @@ def main():
         fig, axs = plt.subplots(1, 2, figsize=(11, 4.5))
         for ax, yv, lab in [(axs[0], auc, "AUC test (%)"), (axs[1], acer, "ACER test (%)")]:
             sc = ax.scatter(cov, yv, c=mm, cmap="viridis", s=55, edgecolors="k", linewidths=.4)
-            ax.set_xlabel("cobertura angular  mean_k max_{j∈S} cos(d_k,d_j)"); ax.set_ylabel(lab)
+            ax.set_xlabel("angular coverage  mean_k max_{j in S} cos(d_k,d_j)"); ax.set_ylabel(lab)
             ax.grid(alpha=.3)
-            fig.colorbar(sc, ax=ax, label="nº PAIs entrenados")
+            fig.colorbar(sc, ax=ax, label="PAIs in training")
         r, p = pearsonr(cov, auc)
-        axs[0].set_title(f"{ds}: la cobertura predice el rendimiento (r={r:+.2f}, p={p:.1e})")
-        axs[1].set_title("mismo eje, sobre ACER")
+        axs[0].set_title(f"{ds}: coverage predicts performance (r={r:+.2f}, p={p:.1e})")
+        axs[1].set_title("same axis, on ACER")
         fig.tight_layout()
         fig.savefig(os.path.join(FIG_DIR, f"coverage_law_{ds}.png".replace("+", "plus")), dpi=130)
-        print(f"\n  figura -> artifacts/coverage_law_{ds}.png")
+        print(f"\n  figure -> artifacts/coverage_law_{ds}.png")
     except Exception as e:
-        print(f"  (figura no generada: {e})")
+        print(f"  (figure not generated: {e})")
 
 
 if __name__ == "__main__":

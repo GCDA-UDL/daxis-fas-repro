@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """
-DAXIS-SELECT — selección de PAIs maximizando COBERTURA ANGULAR (facility location).
+DAXIS-SELECT - choosing PAIs by maximising ANGULAR COVERAGE (facility location).
 
-Motivación (07_coverage_law): lo que predice el rendimiento no es el alineamiento ni la
-dispersión del subconjunto, sino la cobertura   cov(S) = mean_k max_{j∈S} cos(d_k, d_j)
-(r=+0.795 con AUC, r=-0.856 con ACER; R2 0.469 -> 0.773 al añadirla sobre m).
+Motivation (07_coverage_law): what predicts performance is not the alignment or the dispersion of
+the subset but the coverage  cov(S) = mean_k max_{j in S} cos(d_k, d_j).
 
-Ese objetivo es monótono y SUBMODULAR, así que el greedy tiene garantía (1-1/e) del óptimo.
-'Alineado' y 'diverso' son heurísticas que aproximan la cobertura en extremos opuestos del
-presupuesto; maximizarla directamente debería dominar en TODOS los m — predicción falsable.
+That objective is monotone and SUBMODULAR, so greedy carries a (1-1/e) guarantee. 'Aligned' and
+'diverse' are heuristics that approximate coverage at opposite ends of the budget; maximising it
+directly should dominate at every m - a falsifiable prediction.
 
-Genera: picks por m, manifiestos derivados y jobs que se anexan a artifacts/jobs.json.
-Uso: /opt/conda/bin/python 08_daxis_select.py [HQ-WMCA]
+The prediction turned out false, for a reason worth recording. See 13_budget_select: the objective
+is blind to how much data each PAI carries, so at equal PAI count it can pick angularly ideal but
+data-poor sets.
+
+Usage: python 08_daxis_select.py [HQ-WMCA]
 """
 import os, sys, csv, json
 import numpy as np
@@ -50,7 +52,7 @@ def write_manifest(ds, keep, tag):
     with open(src) as f, open(dst, "w", newline="") as g:
         rd = csv.DictReader(f); w = csv.writer(g); w.writerow(rd.fieldnames)
         for r in rd:
-            # el TEST se deja intacto (evaluamos siempre sobre las 10 clases); filtramos train/dev
+            # TEST is left intact (we always evaluate on all classes); only train/dev are filtered
             if r["split"] == "test" or r["subtype"] in keep:
                 w.writerow([r[c] for c in rd.fieldnames]); n += 1
     return dst, n
@@ -64,7 +66,7 @@ def main():
     picks = blob["picks"]
 
     print(f"== DAXIS-select (facility location) [{ds}] ==")
-    print(f"  {'m':>2s} {'cobertura':>9s}  subconjunto   |  cov(alineado) cov(diverso)")
+    print(f"  {'m':>2s} {'coverage':>9s}  subset   |  cov(aligned) cov(diverse)")
     newpicks = {}
     jobs = []
     for m in (2, 4, 6, 8):
@@ -72,9 +74,9 @@ def main():
         covA = cov_of(ks, C, picks["L3_topm_aligned"][str(m)])
         covD = cov_of(ks, C, picks["L3b_diverse"][str(m)])
         newpicks[str(m)] = S
-        star = " <-- gana" if cov > max(covA, covD) else ""
+        star = " <-- wins" if cov > max(covA, covD) else ""
         print(f"  {m:2d} {cov:9.3f}  {', '.join(S)}")
-        print(f"     {'':9s}  vs alineado {covA:.3f} · diverso {covD:.3f}{star}")
+        print(f"     {'':9s}  vs aligned {covA:.3f} · diverse {covD:.3f}{star}")
         tag = f"F1sel{m}"
         path, n = write_manifest(ds, S, tag)
         for s in range(5):
@@ -101,8 +103,8 @@ def main():
     add = [j for j in jobs if j["label"] not in have]
     cur.extend(add)
     json.dump(cur, open(jp, "w"), indent=1)
-    print(f"\n  +{len(add)} jobs anexados a jobs.json (total {len(cur)})")
-    print("  (el scheduler los recoge al reiniciarse; ensure_daxis.sh lo hace solo)")
+    print(f"\n  +{len(add)} jobs appended to jobs.json (total {len(cur)})")
+    print("  (the scheduler picks them up on its next cycle)")
 
 
 if __name__ == "__main__":

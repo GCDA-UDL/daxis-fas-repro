@@ -4,88 +4,88 @@
  "n_test": 6461,
  "K": 10,
  "reps": {
-  "PCA-50 (no superv.)": {
+  "PCA-50 (unsup.)": {
    "knn_pai_balacc": 0.9252303484910359,
-   "probe_auc_livespoof": 0.9632315824490407,
+   "probe_auc_livespoof": 0.9632299038951607,
    "dbscan_ari_pai": 0.10901950684452663,
    "dbscan_nmi_pai": 0.5486786889463982,
    "dbscan_nclusters": 426,
-   "silhouette_pai": 0.02652812222930533,
+   "silhouette_pai": 0.02652807223379126,
    "dims": 50
   },
-  "PCA-10 (no superv.)": {
+  "PCA-10 (unsup.)": {
    "knn_pai_balacc": 0.8752139659725579,
-   "probe_auc_livespoof": 0.9495702902067062,
+   "probe_auc_livespoof": 0.9495719687605864,
    "dbscan_ari_pai": 0.09685632065902763,
    "dbscan_nmi_pai": 0.5334382071092415,
    "dbscan_nclusters": 385,
-   "silhouette_pai": 0.06281519076236068,
+   "silhouette_pai": 0.06281507624645566,
    "dims": 10
   },
   "random-10 (control)": {
-   "knn_pai_balacc": 0.6793760547652298,
-   "probe_auc_livespoof": 0.7436073038457196,
+   "knn_pai_balacc": 0.6790342566499614,
+   "probe_auc_livespoof": 0.7436066934624905,
    "dbscan_ari_pai": 0.15077935342680288,
    "dbscan_nmi_pai": 0.49581060350199263,
    "dbscan_nclusters": 282,
-   "silhouette_pai": 0.004630276169760482,
+   "silhouette_pai": 0.004629962715252196,
    "dims": 10
   },
-  "LDA (superv., Sigma^-1)": {
-   "knn_pai_balacc": 0.9580917231692588,
-   "probe_auc_livespoof": 0.9865341829867882,
-   "dbscan_ari_pai": 0.36727849837360843,
-   "dbscan_nmi_pai": 0.646537473613533,
+  "LDA (sup., Sigma^-1)": {
+   "knn_pai_balacc": 0.9580155210813216,
+   "probe_auc_livespoof": 0.9863458797606077,
+   "dbscan_ari_pai": 0.3662946251068264,
+   "dbscan_nmi_pai": 0.6453976643223159,
    "dbscan_nclusters": 128,
-   "silhouette_pai": 0.45872870251869907,
+   "silhouette_pai": 0.45874962907801375,
    "dims": 10
   },
-  "AXIAL DAXIS (solo medias)": {
+  "AXIAL DAXIS (means only)": {
    "knn_pai_balacc": 0.8586456886226376,
-   "probe_auc_livespoof": 0.9479575051195893,
+   "probe_auc_livespoof": 0.9479533850327928,
    "dbscan_ari_pai": 0.23262562113241875,
    "dbscan_nmi_pai": 0.5497909665198424,
    "dbscan_nclusters": 248,
-   "silhouette_pai": 0.062470887265085345,
+   "silhouette_pai": 0.06247065708179943,
    "dims": 10
   }
  },
  "sweep": {
   "10": {
    "axial_knn": 0.6701465692432342,
-   "axial_auc": 0.9154620753640174,
+   "axial_auc": 0.9154782505195888,
    "lda_knn": 0.7535468326960365,
-   "lda_auc": 0.8723052343413812
+   "lda_auc": 0.872293637060028
   },
   "25": {
-   "axial_knn": 0.764685227706872,
-   "axial_auc": 0.9344242407595609,
-   "lda_knn": 0.782796918252253,
-   "lda_auc": 0.8433033329976226
+   "axial_knn": 0.7646090256189346,
+   "axial_auc": 0.9344205784601862,
+   "lda_knn": 0.782499299204634,
+   "lda_auc": 0.8430571959604838
   },
   "50": {
-   "axial_knn": 0.7740330530909504,
-   "axial_auc": 0.9369359677473502,
-   "lda_knn": 0.8541384834081817,
-   "lda_auc": 0.8497753789716873
+   "axial_knn": 0.7739609030188003,
+   "axial_auc": 0.9369399352383394,
+   "lda_knn": 0.8542971313402998,
+   "lda_auc": 0.8514916240161385
   },
   "100": {
    "axial_knn": 0.7937527686060797,
-   "axial_auc": 0.9431217439869621,
-   "lda_knn": 0.8918536048565386,
-   "lda_auc": 0.9299412811333596
+   "axial_auc": 0.9431142667924056,
+   "lda_knn": 0.8914331919361257,
+   "lda_auc": 0.9279373929921901
   },
   "200": {
-   "axial_knn": 0.8290052107514089,
-   "axial_auc": 0.9477115206782578,
-   "lda_knn": 0.9199001415367719,
-   "lda_auc": 0.904616328361762
+   "axial_knn": 0.8290773608235589,
+   "axial_auc": 0.9477205238308872,
+   "lda_knn": 0.9196395122526724,
+   "lda_auc": 0.9136693798201201
   },
-  "todas": {
+  "all": {
    "axial_knn": 0.8586456886226376,
-   "axial_auc": 0.9479575051195893,
-   "lda_knn": 0.9580917231692588,
-   "lda_auc": 0.9865341829867882
+   "axial_auc": 0.9479533850327928,
+   "lda_knn": 0.9580155210813216,
+   "lda_auc": 0.9863458797606077
   }
  }
 }

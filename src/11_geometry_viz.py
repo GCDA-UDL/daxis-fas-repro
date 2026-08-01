@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
 """
-FIGURAS DE GEOMETRÍA PARA EL PAPER — PCA, t-SNE y DBSCAN.
+GEOMETRY FIGURES FOR THE PAPER - PCA, t-SNE and DBSCAN.
 
-Objetivo doble:
- (a) mostrar visualmente la estructura angular de los PAIs que gobierna la ley de cobertura;
- (b) CONTRASTE que justifica el método: ¿esa estructura se ve en el espacio de features crudo
-     (PCA / t-SNE / DBSCAN no supervisados), o hace falta la geometría DISCRIMINANTE (los ejes)?
-     Si el clustering no supervisado NO recupera los PAIs pero los ejes sí los ordenan, entonces
-     la parte "label-aware" del método no es decorativa. Se cuantifica con ARI/NMI.
+Purpose:
+ (a) show the angular structure of the PAIs that governs the coverage law;
+ (b) a CONTRAST that justifies the method: is that structure visible in the raw feature space
+     (unsupervised PCA / t-SNE / DBSCAN), or does it need the DISCRIMINANT geometry? If
+     unsupervised clustering does NOT recover the PAIs while the axes order them cleanly, the
+     label-aware step is not decorative. Quantified with ARI/NMI.
 
-Paneles:
-  1. PCA 2D de las muestras, coloreadas por PAI            (¿se separan solos?)
-  2. t-SNE 2D de las muestras, coloreadas por PAI
-  3. DBSCAN sobre las muestras -> ARI/NMI vs PAI real      (clustering no supervisado)
-  4. PCA 2D de los EJES discriminantes (la geometría DAXIS)
-  5. DBSCAN sobre distancia ANGULAR entre ejes (1-cos, precomputed) -> familias de PAIs
-  6. Dendrograma angular + cobertura marginal por PAI
+Panels:
+  1. PCA of the samples, coloured by PAI          (do they separate on their own?)
+  2. t-SNE of the samples, coloured by PAI
+  3. DBSCAN over the samples -> ARI/NMI vs true PAI (unsupervised clustering)
+  4. PCA of the discriminant AXES (the DAXIS geometry)
+  5. DBSCAN over ANGULAR distance between axes (1-cos, precomputed) -> PAI families
+  6. Angular dendrogram
 
-Uso: /opt/conda/bin/python 11_geometry_viz.py [HQ-WMCA] [n_muestras_tsne]
-Salida: artifacts/geom_<ds>.png + artifacts/geom_<ds>.json (métricas)
+Usage: python 11_geometry_viz.py [HQ-WMCA] [n_tsne_samples]
 """
 import os, sys, json
 import numpy as np
@@ -54,7 +53,7 @@ def main():
     X = z["X"].astype(np.float64); y = z["y"].astype(int); st = z["subtype"].astype(str)
     Xs = standardize(X)
 
-    # ejes discriminantes + matriz de cosenos (la geometría del método)
+    # axes discriminantes + matriz de cosenos (la geometría del método)
     A = all_axes(Xs, y, st)
     ks, C = cosine_matrix(A)
     ks = [str(k) for k in ks]
@@ -90,7 +89,7 @@ def main():
     out["dbscan_samples"]["ARI_vs_binary"] = float(
         adjusted_rand_score((stsub != "live").astype(int), db.labels_))
 
-    # --- espacio de EJES: PCA de los ejes + DBSCAN angular ---
+    # --- espacio de axes: PCA de los axes + DBSCAN angular ---
     Amat = np.stack([A[k] for k in ks])
     E2 = PCA(n_components=2, random_state=0).fit_transform(Amat)
     best = None
@@ -123,23 +122,23 @@ def main():
     for g in groups:
         m = stsub == g
         ax.scatter(P2[m, 0], P2[m, 1], s=6, alpha=.6, color=col[g], label=g, edgecolors="none")
-    ax.set_title("1. PCA de las muestras (por PAI)"); ax.set_xticks([]); ax.set_yticks([])
+    ax.set_title("1. PCA of samples (by PAI)"); ax.set_xticks([]); ax.set_yticks([])
     ax.legend(fontsize=6, markerscale=2, ncol=2, loc="best")
 
     ax = fig.add_subplot(2, 3, 2)
     for g in groups:
         m = stsub == g
         ax.scatter(T2[m, 0], T2[m, 1], s=6, alpha=.6, color=col[g], edgecolors="none")
-    ax.set_title("2. t-SNE de las muestras (por PAI)"); ax.set_xticks([]); ax.set_yticks([])
+    ax.set_title("2. t-SNE of samples (by PAI)"); ax.set_xticks([]); ax.set_yticks([])
 
     ax = fig.add_subplot(2, 3, 3)
     lb = db.labels_
-    ax.scatter(T2[lb == -1, 0], T2[lb == -1, 1], s=6, c="lightgray", label="ruido", edgecolors="none")
+    ax.scatter(T2[lb == -1, 0], T2[lb == -1, 1], s=6, c="lightgray", label="noise", edgecolors="none")
     for c in sorted(set(lb) - {-1}):
         m = lb == c
         ax.scatter(T2[m, 0], T2[m, 1], s=6, alpha=.7, edgecolors="none")
     d = out["dbscan_samples"]
-    ax.set_title(f"3. DBSCAN no supervisado\nARI vs PAI={d['ARI_vs_PAI']:.2f} · NMI={d['NMI_vs_PAI']:.2f}"
+    ax.set_title(f"3. unsupervised DBSCAN\nARI vs PAI={d['ARI_vs_PAI']:.2f} · NMI={d['NMI_vs_PAI']:.2f}"
                  f" · {d['n_clusters']} clusters", fontsize=10)
     ax.set_xticks([]); ax.set_yticks([])
 
@@ -147,7 +146,7 @@ def main():
     for i, k in enumerate(ks):
         ax.scatter(E2[i, 0], E2[i, 1], s=90, color=col[k], edgecolors="k", linewidths=.5)
         ax.annotate(k, (E2[i, 0], E2[i, 1]), fontsize=7, xytext=(4, 3), textcoords="offset points")
-    ax.set_title("4. PCA de los EJES discriminantes\n(la geometría DAXIS)", fontsize=10)
+    ax.set_title("4. PCA of the discriminant AXES\n(the DAXIS geometry)", fontsize=10)
     ax.grid(alpha=.3)
 
     ax = fig.add_subplot(2, 3, 5)
@@ -156,17 +155,17 @@ def main():
     ax.set_xticks(range(len(ks))); ax.set_xticklabels(ks, rotation=80, fontsize=7)
     ax.set_yticks(range(len(ks))); ax.set_yticklabels(ks, fontsize=7)
     fam_txt = " | ".join(",".join(v) for v in out["dbscan_axes"].get("families", {}).values())
-    ax.set_title(f"5. cosenos entre ejes · familias DBSCAN:\n{fam_txt}", fontsize=8)
+    ax.set_title(f"5. cosenos entre ejes · families DBSCAN:\n{fam_txt}", fontsize=8)
     fig.colorbar(im, ax=ax, fraction=.046)
 
     ax = fig.add_subplot(2, 3, 6)
     dendrogram(linkage(squareform(D_ang, checks=False), method="average"),
                labels=ks, ax=ax, leaf_rotation=80)
-    ax.set_title("6. dendrograma angular (1 - cos)", fontsize=10)
+    ax.set_title("6. angular dendrogram (1 - cos)", fontsize=10)
     ax.tick_params(labelsize=7)
 
-    fig.suptitle(f"{ds}: la estructura de PAIs vive en los ejes discriminantes, "
-                 f"no en el clustering no supervisado del espacio de features", fontsize=12)
+    fig.suptitle(f"{ds}: PAI structure lives in the discriminant axes, "
+                 f"not in unsupervised clustering of the feature space", fontsize=12)
     fig.tight_layout(rect=[0, 0, 1, 0.96])
     p = os.path.join(FIG_DIR, f"geom_{ds}.png".replace("+", "plus"))
     fig.savefig(p, dpi=140); plt.close(fig)
@@ -174,14 +173,14 @@ def main():
     out["mean_cos"] = {k: float(mean_cos[i]) for i, k in enumerate(ks)}
     json.dump(out, open(os.path.join(ART, f"geom_{ds}.json".replace("+", "plus")), "w"), indent=1)
 
-    print(f"== geometría [{ds}] · {len(idx)} muestras, {len(groups)} grupos ==")
-    print(f"  DBSCAN no supervisado (features): {d['n_clusters']} clusters, ruido {d['noise_frac']:.0%}")
-    print(f"    ARI vs PAI      = {d['ARI_vs_PAI']:+.3f}   <- ¿recupera los tipos de ataque?")
+    print(f"== geometry [{ds}] · {len(idx)} samples, {len(groups)} groups ==")
+    print(f"  unsupervised DBSCAN (features): {d['n_clusters']} clusters, noise {d['noise_frac']:.0%}")
+    print(f"    ARI vs PAI      = {d['ARI_vs_PAI']:+.3f}   <- does it recover the attack types?")
     print(f"    NMI vs PAI      = {d['NMI_vs_PAI']:+.3f}")
     print(f"    ARI vs live/spoof = {d['ARI_vs_binary']:+.3f}")
     da = out["dbscan_axes"]
-    print(f"  DBSCAN angular (ejes): {da.get('n_families')} familias, silhouette={da.get('silhouette', float('nan')):.3f}")
-    for a, b in da.get("families", {}).items(): print(f"    familia {a}: {', '.join(b)}")
+    print(f"  angular DBSCAN (axes): {da.get('n_families')} families, silhouette={da.get('silhouette', float('nan')):.3f}")
+    for a, b in da.get("families", {}).items(): print(f"    family {a}: {', '.join(b)}")
     print(f"  -> {p}")
 
 

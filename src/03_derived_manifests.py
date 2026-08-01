@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Manifiestos DERIVADOS para leave-out (L1/L2/L3/L3b/random-m) y filtrado per-sample
-(T1 bottom/top/random-drop, val-clean). Solo tocan el split TRAIN (dev/test intactos,
-para poder medir sobre lo excluido) — salvo *_devclean que filtra dev (para 04/T2).
+Derived manifests: leave-out of classes and per-sample filtering.
 
-Entrada: orders.json (01), <ds>_scores.csv (02), manifiesto base de fas_benchmark.
-Salida:  manifests/<nombre>.csv (mismo formato subtype).
+Writes filtered copies of a subtype manifest so that training a variant needs no change to the
+trainer - only a different manifest.
+
+Usage: python 03_derived_manifests.py [dataset]
 """
 import os, sys, csv, json, random
 
@@ -28,7 +28,7 @@ def write(name, keep_fn):
             n_in += 1
             if keep_fn(r):
                 w.writerow([r[h] for h in HDR]); n_out += 1
-    print(f"  {name}: {n_out}/{n_in} filas -> {os.path.basename(out)}")
+    print(f"  {name}: {n_out}/{n_in} rows -> {os.path.basename(out)}")
     return out
 
 
@@ -40,7 +40,7 @@ def main():
     for r in csv.DictReader(open(sp)):
         sco[r["path"]] = float(r["S1"])
 
-    # --- leave-out (solo train; spoof del subtipo excluido fuera, live intacto) ---
+    # --- leave-out (solo train; spoof del subtype excluido fuera, live intacto) ---
     def drop_subtypes(drops):
         ds_ = set(drops)
         return lambda r: not (r["split"] == "train" and r["label"] == "1" and r["subtype"] in ds_)
@@ -69,10 +69,10 @@ def main():
             rnd = set(random.Random(200 + sd).sample(tr_paths, k))
             write(f"T1_droprand{q}_{sd}", lambda r, x=rnd: r["path"] not in x or r["split"] != "train")
 
-    # --- val-clean (solo dev; para 04/T2, no para entrenar) ---
-    # scores de dev no existen (02 solo train) -> se calculan al vuelo en 04; aquí solo
+    # --- val-clean (dev only; used by the retro analysis, not for training) ---
+    # dev scores do not exist (step 02 covers train only); they are computed on the fly later
     # generamos la variante estructural si hay scores de dev en el csv (opcional).
-    print("hecho.")
+    print("done.")
 
 
 if __name__ == "__main__":

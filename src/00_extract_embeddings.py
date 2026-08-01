@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-Embeddings CONGELADOS (ImageNet, sin entrenar en estos datos -> sin leakage) para la
-geometría DAXIS. Penúltima capa (avgpool) de resnet50 / resnext101_64x4d.
+Extract frozen-network features, which are the input to all of the geometry.
 
-Corre en el env pytorch (3.8). Salida: artifacts/<dataset>_<split>_<backbone>.npz
-  X (n, 2048) float32 · y (n,) int8 · subtype (n,) str · subject (n,) str · path (n,) str
+Penultimate layer (avgpool) of resnet50 / resnext101_64x4d. No fine-tuning: the axes must not
+depend on a model trained on the data they are meant to describe.
 
-Por CPU por defecto (las GPUs están ocupadas por la campaña; 224px resnet50 CPU ~ ok con cap).
-Uso:  python 00_extract_embeddings.py <dataset> <split> <backbone> [cap_per_subtype] [device]
+Runs in the pytorch env (3.8). Output: artifacts/<dataset>_<split>_<backbone>.npz
+Defaults to CPU (the GPUs are usually busy with the campaign; 224px resnet50 on CPU is fine with
+a cap on samples).
+
+Usage:  python 00_extract_embeddings.py <dataset> <split> <backbone> [cap_per_subtype] [device]
 """
 import os, sys, csv
 import numpy as np
@@ -77,7 +79,7 @@ def main():
     h.remove()
     np.savez_compressed(out, X=np.concatenate(X), y=np.array(Y, dtype=np.int8),
                         subtype=np.array(ST), subject=np.array(SU), path=np.array(P))
-    print(f"-> {out} ({len(Y)} filas)", flush=True)
+    print(f"-> {out} ({len(Y)} rows)", flush=True)
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Mapa angular de los PAIs (geometría DAXIS cruda, sin GO/NO-GO) + generación de órdenes O1..O9
-y picks de leave-out. Corre en /opt/conda/bin/python (3.13).
+Angular map of the PAIs (raw geometry, no GO/NO-GO verdict) plus the orderings O1..O9
+and the leave-out picks.
 
-Entrada: artifacts/<ds>_train_<bb>.npz (de 00). Canónico: HQ-WMCA resnet50.
-Salida:  artifacts/orders.json, artifacts/axes_<ds>.npz, figuras heatmap/dendrograma,
-         estabilidad (Kendall tau entre backbones y seeds de shard).
+Input:  artifacts/<ds>_train_<bb>.npz (from step 00). Canonical setting: HQ-WMCA, resnet50.
+Output: artifacts/orders.json, artifacts/axes_<ds>.npz, heatmap and dendrogram figures, and a
+        stability check (Kendall tau across backbones and across bonafide-shard seeds).
 """
 import os, sys, json
 import numpy as np
@@ -42,11 +42,11 @@ def analyze(ds, bb, shard_seed=0, canonical=False):
     axes = all_axes(Xs, y, st)
     ks, C = cosine_matrix(axes)
     out = {"ks": ks, "C": C, "axes": axes}
-    # daxis_score canónico (pseudo-dominios con shard live por sujeto) — validez del score global
+    # canonical daxis_score (pseudo-domains with a subject-wise bonafide shard) to sanity-check the global score
     if canonical:
         dom, _ = pseudo_domains(y, st, su, seed=shard_seed)
         res = daxis.daxis_score(X, y, dom, mode="binary", n_boot=100, n_perm=100, random_state=0)
-        # reordenar la matriz canónica al orden de ks
+        # reorder the canonical matrix to the ks order
         idx = [res.domains.index(k) for k in ks]
         out["daxis_score"] = float(res.score); out["daxis_p"] = float(res.p_value)
         out["C_daxis"] = res.matrix[np.ix_(idx, idx)]
@@ -58,8 +58,8 @@ def main():
     ds = sys.argv[1] if len(sys.argv) > 1 else "HQ-WMCA"
     # --- canónico: resnet50, shard seed 0 ---
     R = analyze(ds, "resnet50", 0, canonical=True)
-    assert R is not None, "faltan embeddings resnet50 (corre 00 primero)"
-    # str() explicito: numpy.str_ no serializa limpio a JSON y rompe a los consumidores
+    assert R is not None, "missing embeddings resnet50 (run step 00 first)"
+    # explicit str(): numpy.str_ does not serialise cleanly to JSON and breaks consumers
     ks, C, axes = [str(k) for k in R["ks"]], R["C"], {str(k): v for k, v in R["axes"].items()}
     d0 = load(ds, "resnet50"); X, y, st, su = d0; Xs = standardize(X)
     fc = freq_counts(st, y)
@@ -89,8 +89,8 @@ def main():
         "L3b_diverse": {str(m): pick_diverse(ks, C, m) for m in (2, 4, 6, 8)},
         "start_most_frequent": start,
     }
-    # estabilidad: Kendall tau del ranking O1 entre variantes (backbone / shard-seed no afecta
-    # a los ejes con mu_live global, pero sí al C_daxis; comparamos ambos caminos)
+    # stability: Kendall tau of the O1 ranking across variants (backbone / shard seed does not affect
+    # a los axes con mu_live global, pero sí al C_daxis; comparamos ambos caminos)
     stab = {}
     o1_c = orders["O1_aligned_first"]
     if "C_daxis" in R:
@@ -132,21 +132,21 @@ def main():
         im = axs[0].imshow(C, vmin=-1, vmax=1, cmap="RdBu_r")
         axs[0].set_xticks(range(len(ks))); axs[0].set_xticklabels(ks, rotation=75, fontsize=8)
         axs[0].set_yticks(range(len(ks))); axs[0].set_yticklabels(ks, fontsize=8)
-        axs[0].set_title(f"{ds}: cosenos entre ejes discriminantes"); fig.colorbar(im, ax=axs[0])
+        axs[0].set_title(f"{ds}: cosines between discriminant axes"); fig.colorbar(im, ax=axs[0])
         D = 1 - C; np.fill_diagonal(D, 0)
         dendrogram(linkage(squareform(D, checks=False), method="average"), labels=ks, ax=axs[1],
                    leaf_rotation=75)
-        axs[1].set_title("dendrograma angular")
+        axs[1].set_title("angular dendrogram")
         fig.tight_layout(); fig.savefig(os.path.join(ART, f"map_{ds}.png".replace("+", "plus")), dpi=130)
     except Exception as e:
-        print(f"(figura no generada: {e})")
+        print(f"(figure not generated: {e})")
 
     print(f"== {ds} ==")
     print(f"daxis_score={blob['daxis_score']} p={blob['daxis_p']}")
     print(f"mean_cos: " + " ".join(f"{k}:{blob['mean_cos'][k]:+.2f}" for k in ks))
     for k, v in orders.items(): print(f"  {k}: {v}")
     for k, v in picks.items(): print(f"  {k}: {v}")
-    print(f"estabilidad: {stab}")
+    print(f"stability: {stab}")
 
 
 if __name__ == "__main__":

@@ -46,7 +46,7 @@ class ManifestDataset(Dataset):
         self.transform = transform
     def __len__(self): return len(self.rows)
     def __getitem__(self, i):
-        # robusto a imágenes corruptas/ilegibles: reintenta con otras al azar, no rompe el run
+        # robusto a images corruptas/ilegibles: reintenta con otras al azar, no rompe el run
         for k in range(20):
             idx = i if k == 0 else random.randrange(len(self.rows))
             p, y = self.rows[idx]
@@ -77,7 +77,7 @@ def split_train_dev_by_subject(rows, dataset, frac=0.15, seed=0):
         if len(dev) >= target: break
         dev.update(groups[s])
     dev_idx = sorted(dev); tr_idx = [i for i in range(len(rows)) if i not in dev]
-    print(f"  dev por sujeto: {len(subs)} sujetos -> dev {len(dev_idx)} muestras (disjuntos de train)")
+    print(f"  dev por sujeto: {len(subs)} subjects -> dev {len(dev_idx)} muestras (disjuntos de train)")
     return tr_idx, dev_idx
 
 def class_weights(labels, device):

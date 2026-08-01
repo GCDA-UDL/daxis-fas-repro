@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-FIGURAS FINALES DEL PAPER. Genera en daxis-paper-fas/figures/:
-  fig_coverage_law.png   la ley en los 7 datasets (rejilla con recta de regresión)
-  fig_budget.png         selección a presupuesto de imágenes FIJO (4k/8k/16k)
-  fig_crossover.png      por qué 'alineado' gana con poco y 'diverso' con mucho -> es cobertura
-Uso: /opt/conda/bin/python 14_paper_figures.py
+FINAL PAPER FIGURES. Writes into the figures/ directory:
+  fig_coverage_law.png   the law across the 7 datasets (grid with regression lines)
+  fig_budget.png         selection at a FIXED image budget (4k/8k/16k)
+  fig_crossover.png      why 'aligned' wins small and 'diverse' wins large -> it is coverage
+
+Usage: python 14_paper_figures.py
 """
 import os, sys, csv, json
 import numpy as np
@@ -65,7 +66,7 @@ def fig_law():
     order = ["HQ-WMCA", "CelebA-Spoof", "SiW", "OULU-NPU", "CASIA-FASD", "replay", "CASIA-SURF"]
     order = [d for d in order if d in data]
     n = len(order)
-    # normalización COMÚN del color (si no, cada panel usa su propio rango de m y engaña)
+    # COMMON colour normalisation (otherwise each panel uses its own range of m and misleads)
     allm = [p[1] for ds in order for p in data[ds]]
     norm = matplotlib.colors.Normalize(vmin=min(allm), vmax=max(allm))
     fig, axs = plt.subplots(2, n, figsize=(2.9 * n, 6.6), squeeze=False)
@@ -79,7 +80,7 @@ def fig_law():
             ax = axs[row][i]
             sc = ax.scatter(cov, yv, c=m, cmap="viridis", norm=norm, s=32,
                             edgecolors="k", linewidths=.3)
-            # rango util para regresion: al menos 3 niveles de cobertura y recorrido apreciable
+            # usable range for regression: at least 3 coverage levels and an appreciable span
             if ndist >= 3 and rng > 0.02:
                 z = np.polyfit(cov, yv, 1); xs = np.linspace(cov.min(), cov.max(), 20)
                 ax.plot(xs, np.polyval(z, xs), "r--", lw=1.3)
@@ -88,23 +89,23 @@ def fig_law():
                 txt, col = f"$r={r:+.2f}$ {star}", ("black" if pv < .05 else "gray")
             elif ndist >= 2:
                 r, pv = pearsonr(cov, yv)
-                txt, col = f"$r={r:+.2f}$ (2 niveles)", "gray"
+                txt, col = f"$r={r:+.2f}$ (2 levels)", "gray"
             else:
-                txt, col = "rango degenerado", "gray"
-            # anotacion DENTRO del eje -> no pisa titulos ni etiquetas
+                txt, col = "degenerate range", "gray"
+            # annotation INSIDE the axes so it cannot collide with titles or labels
             ax.text(.04, .06 if row == 1 else .93, txt, transform=ax.transAxes,
                     fontsize=8.5, color=col, va="bottom" if row == 1 else "top",
                     bbox=dict(fc="white", ec="none", alpha=.75, pad=1.5))
             if i == 0: ax.set_ylabel(lab, fontsize=9)
-            if row == 1: ax.set_xlabel("cobertura", fontsize=8)
+            if row == 1: ax.set_xlabel("coverage", fontsize=8)
             ax.tick_params(labelsize=7); ax.grid(alpha=.25)
         axs[0][i].set_title(ds, fontsize=10, fontweight="bold", pad=6)
-    fig.suptitle("La cobertura angular predice el rendimiento en PAD  "
+    fig.suptitle("Angular coverage predicts PAD performance  "
                  r"$\mathrm{cov}(S)=\mathrm{mean}_k\,\max_{j\in S}\langle d_k,d_j\rangle$",
                  fontsize=12.5)
     fig.tight_layout(rect=[0, 0, 0.955, 0.94])
     cax = fig.add_axes([0.965, 0.12, 0.011, 0.72])
-    fig.colorbar(sc, cax=cax, label="nº PAIs entrenados")
+    fig.colorbar(sc, cax=cax, label="PAIs in training")
     p = os.path.join(OUT, "fig_coverage_law.png")
     fig.savefig(p, dpi=150); plt.close(fig)
     print(f"  -> {p}  ({n} datasets)")
@@ -115,8 +116,8 @@ def fig_budget():
     meta = json.load(open(os.path.join(ART, "budget_cells.json")))["HQ-WMCA"]
     budgets = sorted({m["budget"] for m in meta.values()})
     strat = ["cov", "cb", "wcov", "big", "rand"]
-    NAMES = {"cov": "cobertura", "cb": "coste-beneficio", "wcov": "cob. ponderada",
-             "big": "clases mayores", "rand": "azar"}
+    NAMES = {"cov": "coverage", "cb": "cost-benefit", "wcov": "weighted cov.",
+             "big": "largest classes", "rand": "random"}
     COL = {"cov": "#1f77b4", "cb": "#2ca02c", "wcov": "#9467bd", "big": "#ff7f0e", "rand": "#7f7f7f"}
     fig, axs = plt.subplots(1, 2, figsize=(12.5, 4.6))
     w = 0.16
@@ -143,8 +144,8 @@ def fig_budget():
         ax.set_ylabel(lab); ax.grid(alpha=.25, axis="y")
         ax.set_ylim(85 if key == 2 else 0, 101 if key == 2 else None)
     axs[0].legend(fontsize=8, ncol=3, loc="lower right")
-    fig.suptitle("Selección a PRESUPUESTO DE IMÁGENES FIJO (HQ-WMCA, 3 semillas; "
-                 "la cifra sobre cada barra es su cobertura)", fontsize=12)
+    fig.suptitle("Selection at a FIXED IMAGE BUDGET (HQ-WMCA, 3 seeds; "
+                 "the number above each bar is its coverage)", fontsize=12)
     fig.tight_layout(rect=[0, 0, 1, .94])
     p = os.path.join(OUT, "fig_budget.png")
     fig.savefig(p, dpi=150); plt.close(fig)
@@ -170,19 +171,19 @@ def fig_crossover():
     cD = [cov(picks["L3b_diverse"][str(m)]) for m in ms]
     cS = [cov(picks["F_daxis_select"][str(m)]) for m in ms]
     fig, axs = plt.subplots(1, 2, figsize=(11.5, 4.4))
-    for y, c, lab, mk in [(A, cA, "alineado", "o"), (D, cD, "diverso", "s"), (S, cS, "cobertura máx.", "^")]:
+    for y, c, lab, mk in [(A, cA, "aligned", "o"), (D, cD, "diverse", "s"), (S, cS, "max coverage", "^")]:
         axs[0].plot(ms, y, mk + "-", label=lab, lw=1.6)
         axs[1].plot(c, y, mk, ms=9, label=lab)
-    axs[0].set_xlabel("nº de PAIs entrenados ($m$)"); axs[0].set_ylabel("AUC (%)")
-    axs[0].set_title("El cruce: alineado gana con poco, diverso con mucho", fontsize=10)
+    axs[0].set_xlabel("PAIs in training ($m$)"); axs[0].set_ylabel("AUC (%)")
+    axs[0].set_title("The crossover: aligned wins at small budgets, diverse at large ones", fontsize=10)
     axs[0].set_xticks(ms); axs[0].grid(alpha=.3); axs[0].legend(fontsize=8)
     allc = [x for x in cA + cD + cS]; ally = [x for x in A + D + S if x]
     if len(ally) >= 3:
         zz = np.polyfit([c for c, y in zip(allc, A + D + S) if y], ally, 1)
         xs = np.linspace(min(allc), max(allc), 20)
         axs[1].plot(xs, np.polyval(zz, xs), "r--", lw=1.2)
-    axs[1].set_xlabel("cobertura del subconjunto"); axs[1].set_ylabel("AUC (%)")
-    axs[1].set_title("...pero leído en cobertura, no hay contradicción", fontsize=10)
+    axs[1].set_xlabel("subset coverage"); axs[1].set_ylabel("AUC (%)")
+    axs[1].set_title("...but read through coverage there is no contradiction", fontsize=10)
     axs[1].grid(alpha=.3); axs[1].legend(fontsize=8)
     fig.tight_layout()
     p = os.path.join(OUT, "fig_crossover.png")
@@ -193,4 +194,4 @@ def fig_crossover():
 if __name__ == "__main__":
     print("== figuras del paper ==")
     fig_law(); fig_budget(); fig_crossover()
-    print("hecho.")
+    print("done.")

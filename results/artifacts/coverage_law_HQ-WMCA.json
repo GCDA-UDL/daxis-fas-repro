@@ -1,24 +1,24 @@
 {
  "n_cells": 39,
- "cobertura -> AUC": {
+ "coverage -> AUC": {
   "pearson_r": 0.7952648686005045,
   "pearson_p": 1.4674780713070823e-09,
   "spearman_r": 0.9419400988198602,
   "spearman_p": 4.0137628376569034e-19
  },
- "cobertura -> ACER": {
+ "coverage -> ACER": {
   "pearson_r": -0.8564340003492009,
   "pearson_p": 3.5832387820223414e-12,
   "spearman_r": -0.8832148240455389,
   "spearman_p": 9.95568761053034e-14
  },
- "n\u00ba clases m -> AUC": {
+ "n classes m -> AUC": {
   "pearson_r": 0.6851689736125732,
   "pearson_p": 1.4949448234143223e-06,
   "spearman_r": 0.8667898372304316,
   "spearman_p": 9.830670302837875e-13
  },
- "alineam. interno -> AUC": {
+ "within-set alignment -> AUC": {
   "pearson_r": 0.5029894013884512,
   "pearson_p": 0.0011000275531620107,
   "spearman_r": -0.1499049563442533,

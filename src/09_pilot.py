@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-PROTOCOLO DE PLANIFICACIÓN DE CAPTURA — ¿basta un piloto diminuto para decidir qué PAIs capturar?
+CAPTURE-PLANNING PROTOCOL - is a tiny pilot enough to decide which PAIs to capture?
 
-Capturar PAIs es caro (máscaras a medida, sesiones de maquillaje, impresión...). Si los ejes
-discriminantes estimados con POCAS imágenes por PAI ya eligen el mismo subconjunto que con todos
-los datos, se puede planificar la captura: piloto pequeño -> geometría -> decidir qué escalar.
+Capturing a PAI is expensive (bespoke masks, makeup sessions, printing). If the axes estimated
+from FEW images per PAI already select the same subset as the full data, capture can be planned:
+small pilot -> geometry -> decide what to scale up.
 
-Test (solo CPU, sin entrenar): submuestrear n imgs/PAI, re-estimar ejes, re-ejecutar la selección
-por cobertura, y medir el acuerdo con la selección de datos completos (Jaccard) y la pérdida de
-cobertura real (evaluada SIEMPRE con la geometría completa, que es la verdad de referencia).
+Test (CPU only, no training): subsample n images/PAI, re-estimate the axes, re-run the selection,
+and measure the agreement with the full-data choice (Jaccard) and the real coverage lost
+(always evaluated with the full geometry, which is the ground truth).
 
-Uso: /opt/conda/bin/python 09_pilot.py [HQ-WMCA]
+Usage: python 09_pilot.py [HQ-WMCA]
 """
 import os, sys, json
 import numpy as np
@@ -24,7 +24,7 @@ REPS = 20
 
 
 def axes_from(Xs, y, st, ks, rng, n_per):
-    """Ejes con n_per imgs por PAI (y el mismo nº de bonafide) — simula un piloto."""
+    """Axes from n_per images per PAI (and the same count of bonafide): simulates a pilot."""
     live = np.where(y == 0)[0]
     lv = rng.choice(live, min(len(live), n_per * 2), replace=False)
     mu_live = Xs[lv].mean(0)
@@ -70,9 +70,9 @@ def main():
     full = {m: greedy(ks, C_true, m) for m in (2, 4, 6, 8)}
     cov_full = {m: cov_true(ks, C_true, full[m]) for m in full}
 
-    print(f"== PILOTO: ¿cuántas imágenes/PAI hacen falta para decidir bien? [{ds}] ==")
-    print(f"  selección con datos completos: " + " · ".join(f"m={m}:{cov_full[m]:.3f}" for m in full))
-    print(f"\n  {'n/PAI':>6s} {'m':>2s} {'Jaccard vs full':>16s} {'cobertura real':>15s} {'pérdida':>8s}")
+    print(f"== PILOT: how many images per PAI are needed to decide well? [{ds}] ==")
+    print(f"  full-data selection: " + " · ".join(f"m={m}:{cov_full[m]:.3f}" for m in full))
+    print(f"\n  {'n/PAI':>6s} {'m':>2s} {'Jaccard vs full':>16s} {'real coverage':>15s} {'loss':>8s}")
     out = {"cov_full": {str(m): cov_full[m] for m in cov_full}, "sizes": {}}
     for n_per in SIZES:
         out["sizes"][str(n_per)] = {}
@@ -84,14 +84,14 @@ def main():
                 S = greedy(ks, cmat(A, ks), m)
                 inter = len(set(S) & set(full[m])); union = len(set(S) | set(full[m]))
                 js.append(inter / union)
-                cvs.append(cov_true(ks, C_true, S))     # cobertura REAL del set elegido con poco dato
+                cvs.append(cov_true(ks, C_true, S))     # coverage REAL del set elegido con poco dato
             loss = cov_full[m] - float(np.mean(cvs))
             print(f"  {n_per:6d} {m:2d} {np.mean(js):16.2f} {np.mean(cvs):15.3f} {loss:+8.3f}")
             out["sizes"][str(n_per)][str(m)] = {"jaccard": float(np.mean(js)),
                                                 "cov_real": float(np.mean(cvs)), "loss": float(loss)}
         print()
     tot = {k: int(np.sum(st == k)) for k in ks}
-    print(f"  (train real por PAI: min={min(tot.values())} max={max(tot.values())})")
+    print(f"  (actual train size per PAI: min={min(tot.values())} max={max(tot.values())})")
     json.dump(out, open(os.path.join(ART, f"pilot_{ds}.json".replace("+", "plus")), "w"), indent=1)
     print(f"  -> artifacts/pilot_{ds}.json")
 

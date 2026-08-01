@@ -1,129 +1,133 @@
-# Angular Coverage Governs Training-Set Selection in Face PAD — paquete de reproducción
+# Angular coverage for training-set selection in face PAD — reproducibility package
 
-Código y resultados derivados del artículo *"What to Train On, Not How to Order It: Angular
-Coverage Governs Training-Set Selection in Face Presentation Attack Detection"*.
+Code and derived results for the paper "What to Train On, Not How to Order It: Angular Coverage
+Governs Training-Set Selection in Face Presentation Attack Detection".
 
-**Idea en una frase**: para cada tipo de ataque de presentación (PAI) se calcula su *eje
-discriminante* `d_k = normalizar(media(ataque k) − media(bonafide))` sobre una red congelada, y la
-*cobertura angular* de un conjunto de entrenamiento `S` es `cov(S) = media_k max_{j∈S} <d_k, d_j>`
-—es decir, si cada ataque que verá el sistema tiene alguno parecido en el entrenamiento—. Esa
-cantidad, calculable **sin entrenar nada**, predice el rendimiento del detector.
+For each presentation attack instrument (PAI) we compute a discriminant axis on a frozen network,
 
----
+    d_k = normalise( mean(features of attack k) - mean(features of bonafide) )
 
-## Nivel 1 — reproducir el artículo (sin datasets, sin GPU)
+and define the angular coverage of a training set S as `cov(S) = mean_k max_{j in S} <d_k, d_j>`,
+i.e. whether every attack the system will face has something similar in training. Coverage requires
+no training to compute, and it predicts detector performance.
 
-Todo lo necesario está incluido: los resultados de **las 331 ejecuciones controladas** y los ejes
-discriminantes ya calculados.
+## Level 1: reproducing the paper (no datasets, no GPU)
+
+The outcomes of all 331 controlled runs and the pre-computed discriminant axes are bundled here, so
+the analysis runs on its own.
 
 ```bash
 pip install -r requirements.txt        # numpy, scipy, scikit-learn, matplotlib
-python src/reproduce_all.py            # pocos minutos
+python src/reproduce_all.py
 ```
 
-Regenera las estadísticas de la ley de cobertura, el análisis de olvido, el experimento del piloto,
-la comprobación de taxonomía y **todas las figuras del artículo** en `figures/`.
+This takes a few minutes and regenerates the coverage-law statistics, the forgetting analysis, the
+pilot experiment, the taxonomy check, and the paper figures into `figures/`.
 
-Valores esperados (compara con tu salida para verificar):
+Values to compare your output against:
 
-| resultado | valor |
+| result | value |
 |---|---|
-| Cobertura → AUC (HQ-WMCA, 39 celdas) | `r = +0.795`, `p = 1.5e-09` |
-| Cobertura → ACER | `r = −0.856`, `p = 3.6e-12` |
-| R² solo nº de PAIs → + cobertura | `0.469 → 0.773` |
-| Olvido ↔ ángulo (180 transiciones) | `r = +0.275`, `p = 1.9e-04` |
-| Piloto de 25 imágenes/PAI | pérdida de cobertura `+0.004` |
-| DBSCAN no supervisado vs partición de PAIs | `ARI = 0.145` (y `−0.105` vs real/ataque) |
+| Coverage vs AUC (HQ-WMCA, 39 cells) | r = +0.795, p = 1.5e-09 |
+| Coverage vs ACER | r = -0.856, p = 3.6e-12 |
+| R² from PAI count alone, then adding coverage | 0.469 to 0.773 |
+| Forgetting vs angle (180 transitions) | r = +0.275, p = 1.9e-04 |
+| Pilot of 25 images per PAI | coverage loss +0.004 |
+| Unsupervised DBSCAN against the PAI partition | ARI = 0.145 (and -0.105 against bonafide/attack) |
 
-Análisis individuales:
+Individual analyses:
+
 ```bash
-python src/07_coverage_law.py HQ-WMCA      # la ley
-python src/06_retro_forgetting.py HQ-WMCA  # olvido vs ángulo
-python src/09_pilot.py HQ-WMCA             # planificación de captura
-python src/11_geometry_viz.py HQ-WMCA 3000 # PCA/t-SNE/DBSCAN + taxonomía
-python src/12_axial_space.py HQ-WMCA       # coordenadas axiales vs LDA (resultado negativo)
-python src/14_paper_figures.py             # figuras
+python src/07_coverage_law.py HQ-WMCA      # the law
+python src/06_retro_forgetting.py HQ-WMCA  # forgetting against angle
+python src/09_pilot.py HQ-WMCA             # capture planning
+python src/11_geometry_viz.py HQ-WMCA 3000 # PCA/t-SNE/DBSCAN and the taxonomy
+python src/12_axial_space.py HQ-WMCA       # axial coordinates against LDA (a negative result)
+python src/14_paper_figures.py             # figures
 ```
 
-## Nivel 2 — re-entrenar desde cero (necesita datasets + GPU)
+## Level 2: retraining from scratch (datasets and a GPU required)
 
-Requiere los siete datasets de anti-spoofing. **No se redistribuyen aquí**: cada uno tiene su propio
-acuerdo de licencia. La estructura de carpetas que espera el código y **dónde se cambia la ruta**
-están en **[`docs/DATASETS.md`](docs/DATASETS.md)**.
+This needs the seven face anti-spoofing datasets. They are not redistributed here, since each
+carries its own licence agreement. The layout the code expects, and where to point it, are in
+[`docs/DATASETS.md`](docs/DATASETS.md).
 
 ```bash
-export FAS_DATA_ROOT=/ruta/a/tus/datasets
-export DAXIS_OUT=/ruta/de/salida
+export FAS_DATA_ROOT=/path/to/your/datasets
+export DAXIS_OUT=/path/to/output
 
 pip install torch torchvision pillow opencv-python
 
-python src/build_subtype_manifests.py all          # manifiestos con PAI por muestra
+python src/build_subtype_manifests.py all          # manifests carrying a PAI label per sample
 python src/00_extract_embeddings.py HQ-WMCA train resnet50 4000 cuda:0
-python src/01_daxis_map.py HQ-WMCA                 # ejes + matriz de cosenos + órdenes
-python src/08_daxis_select.py HQ-WMCA              # selección por cobertura (facility location)
-python src/13_budget_select.py HQ-WMCA             # selección a presupuesto de imágenes fijo
+python src/01_daxis_map.py HQ-WMCA                 # axes, cosine matrix, orderings
+python src/08_daxis_select.py HQ-WMCA              # coverage selection (facility location)
+python src/13_budget_select.py HQ-WMCA             # selection at a fixed image budget
 ```
-Entrenamiento de una celda concreta:
+
+Training a single cell:
+
 ```bash
 python src/ibt_generic.py --manifest manifests/HQ-WMCA_subtype.csv --dataset HQ-WMCA \
        --design within --order standard --seed 0 --model resnet50 \
-       --epochs_per_iter 3 --cap_per_class 4000 --batch_size 64 --tag mi-prueba
+       --epochs_per_iter 3 --cap_per_class 4000 --batch_size 64 --tag my-run
 ```
 
-Coste aproximado de la campaña completa: **331 ejecuciones ≈ 200 GPU-hora** en RTX 2080 Ti.
+The full campaign is 331 runs, roughly 200 GPU-hours on RTX 2080 Ti.
 
----
-
-## Contenido
+## Contents
 
 ```
-src/                 código
-  config.py            rutas (variables de entorno; por defecto apuntan dentro del repo)
-  daxis_ext.py         geometría: ejes, cosenos, órdenes, scores por muestra
-  ibt_generic.py       entrenador (soporta curriculum, órdenes custom y filtrado)
-  build_subtype_manifests.py   adaptadores de los 7 datasets a un formato común
-  00..14_*.py          extracción, geometría, análisis y figuras (numerados por orden de uso)
-  reproduce_all.py     ejecuta todo el Nivel 1
+src/                 code
+  config.py            paths (environment variables, defaulting inside the repo)
+  daxis_ext.py         geometry: axes, cosines, orderings, per-sample scores
+  ibt_generic.py       trainer (curricula, custom orderings, filtering)
+  build_subtype_manifests.py   adapters mapping the 7 datasets to a common format
+  00..14_*.py          extraction, geometry, analysis, figures (numbered by order of use)
+  reproduce_all.py     runs all of Level 1
 results/
-  results_daxis_campaign.csv        una fila por iteración de cada ejecución de selección
-  results_curriculum_campaign.csv   ídem para los experimentos de curriculum
-  artifacts/           ejes (axes_*.npz), órdenes, celdas, y embeddings de HQ-WMCA
-figures/             figuras del artículo
-docs/DATASETS.md     estructura esperada de cada dataset y dónde cambiar la ruta
+  results_daxis_campaign.csv        one row per iteration of each selection run
+  results_curriculum_campaign.csv   the same for the curriculum experiments
+  artifacts/           axes (axes_*.npz), orderings, cells, HQ-WMCA embeddings
+figures/             paper figures
+docs/DATASETS.md     expected layout of each dataset, and where to change the path
 ```
 
-### Sobre los embeddings incluidos
-`results/artifacts/HQ-WMCA_train_resnet50.npz` (79 MB) son las features de la red congelada del
-dataset principal, guardadas en **float16** para que el paquete quepa. La geometría no se ve
-afectada: la diferencia máxima en la matriz de cosenos frente a float32 es **1.5e-06**, porque solo
-se usan medias y productos escalares normalizados.
+`results/artifacts/HQ-WMCA_train_resnet50.npz` (79 MB) holds the frozen-network features of the
+primary dataset, stored as float16 to keep the package to a reasonable size. This does not affect
+the geometry: the largest change in the cosine matrix against float32 is 1.5e-06, since only means
+and normalised dot products are involved. Embeddings for the other datasets come to about 1 GB and
+are not included; regenerate them with `00_extract_embeddings.py`.
 
-Los embeddings de los otros datasets no se incluyen (≈1 GB); se regeneran con
-`00_extract_embeddings.py` una vez tengas los datasets.
+## Limitations and negative results
 
----
+All of these appear in the paper. They are repeated here so that nothing about the numbers you
+obtain comes as a surprise.
 
-## Notas de honestidad
+The law is correlational. It rests on controlled ablations of the training set, not on
+interventions on coverage at a fixed number of PAIs.
 
-Estos puntos están en el artículo y se repiten aquí para que no haya sorpresas al reproducir:
+It does not replicate on two of the seven datasets, and in both cases the reason is identifiable.
+Replay-Attack is saturated: with any reasonable subset its AUC sits at 99-100, leaving no variance
+to correlate, although it does follow the law on ACER (r = -0.795). CASIA-SURF is degenerate for
+this test, since three PAIs admit only m=2 subsets whose coverage spans 0.984 to 0.993. Both are
+reported rather than dropped.
 
-- **La ley es correlacional.** Se establece sobre ablaciones controladas del conjunto de
-  entrenamiento, no sobre intervenciones en la cobertura a número de PAIs fijo.
-- **No replica en dos de siete datasets, y ambos casos vienen con su causa.** Replay-Attack está
-  saturado (AUC 99–100 con cualquier subconjunto, sin varianza que correlacionar) aunque sí sigue
-  la ley en ACER (`r = −0.795`); CASIA-SURF es degenerado para este test (3 PAIs → cobertura
-  0.984–0.993, sin variación). Se reportan, no se ocultan.
-- **Maximizar la cobertura a ciegas NO gana de forma fiable.** El objetivo ignora cuántos datos
-  aporta cada PAI: a presupuesto fijo, la estrategia de mayor cobertura pierde contra una de menor
-  cobertura que conserva los PAIs grandes. La cobertura es un buen *descriptor* y un mal *objetivo*.
-- **El curriculum guiado por geometría no funciona.** Diez variantes, incluido *rehearsal* angular,
-  pierden contra entrenamiento conjunto con cómputo igualado.
-- **El ACER es más informativo que el AUC** en estos análisis, porque el AUC satura cerca de 100.
-- **CASIA-FASD trae un error de etiquetado** en la extracción habitual (10.359 caras reales
-  marcadas como ataque); el adaptador de este repo lo corrige. Tenlo en cuenta al comparar con
-  números publicados.
+Maximising coverage directly does not reliably win. The objective ignores how much data each PAI
+contributes, so at a fixed image budget the highest-coverage strategy loses to a lower-coverage one
+that keeps the large PAIs. Coverage works as a descriptor and fails as an objective.
 
-## Licencia y cita
+Geometry-driven curricula do not work. Ten variants, angular rehearsal among them, lose to
+compute-matched joint training.
 
-Código y resultados derivados: **MIT** (ver `LICENSE`). No cubre los datasets.
-Para citar, ver `CITATION.cff`.
+ACER carries more signal than AUC in these analyses, because AUC saturates near 100 on most PAD
+benchmarks.
+
+CASIA-FASD carries a labelling error in the usual frame export, where 10,359 genuine faces are
+marked as attacks. The adapter here corrects it, which is worth knowing when comparing against
+published numbers.
+
+## Licence and citation
+
+Code and derived results are MIT (see `LICENSE`); this does not extend to the datasets. For
+citation details see `CITATION.cff`.

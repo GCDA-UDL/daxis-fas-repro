@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """
-REPLICACIÓN MULTI-DATASET de la ley de cobertura (diseño de REGRESIÓN).
+MULTI-DATASET REPLICATION of the coverage law (REGRESSION design).
 
-07_coverage_law encontró en HQ-WMCA que cov(S) = mean_k max_{j∈S} cos(d_k,d_j) predice el
-rendimiento (r=+0.795 AUC / -0.856 ACER; R2 0.47->0.77 sobre m). Un dataset no basta para el paper.
+07_coverage_law found on HQ-WMCA that cov(S) predicts performance. One dataset is not enough for
+a paper.
 
-Diseño: en vez de comparar heurísticas (alineado/diverso/random), que confunden la variable de
-interés, se MUESTREAN SUBCONJUNTOS del train de tamaños variados. Cada subconjunto es un punto
-(cobertura, AUC) y la ley se contrasta por regresión. Es más limpio y más barato.
+Design: rather than comparing heuristics (aligned/diverse/random), which confound the variable of
+interest, training SUBSETS are SAMPLED at varying sizes. Each subset is one (coverage, AUC)
+observation and the law is tested by regression. Cleaner and cheaper.
 
-Nota sobre saturación: que un dataset dé AUC~100 con todos los PAIs NO impide el test — al
-restringir el train a pocos PAIs el rendimiento cae (en HQ-WMCA, de 99.9 a 81-94), que es
-justo la varianza que la regresión necesita.
+Note on saturation: a dataset reaching AUC~100 with all PAIs does NOT preclude the test -
+restricting the training subset drives performance down (on HQ-WMCA, from 99.9 to 81-94), which
+is exactly the variance the regression needs.
 
-Uso: /opt/conda/bin/python 10_coverage_multi.py <dataset> [n_subsets] [seeds]
-Genera manifiestos + jobs anexados a artifacts/jobs.json (bloque G-cov<ds>).
+Usage: python 10_coverage_multi.py <dataset> [n_subsets] [seeds]
 """
 import os, sys, csv, json, itertools
 import numpy as np
@@ -26,14 +25,14 @@ from config import ART, RES_DAXIS, RES_CURRICULUM, FIG_DIR, OUT, FAS_DATA_ROOT, 
 MAN_OUT = os.path.join(HERE, "manifests")
 MAN_SRC = os.path.join(HERE, "..", "fas_benchmark", "manifests")
 os.makedirs(MAN_OUT, exist_ok=True)
-# minutos/job estimados: escala con el nº de clases y el tamaño del dataset
+# estimated minutes per job: scales with the number of classes and the dataset size
 EST = {"CelebA-Spoof": 120, "SiW": 70, "OULU-NPU": 55, "replay": 45,
        "CASIA-FASD": 35, "CASIA-SURF": 35, "HQ-WMCA": 50}
 
 
 def axes_and_C(ds):
     p = os.path.join(ART, f"{ds}_train_resnet50.npz".replace("+", "plus"))
-    assert os.path.isfile(p), f"faltan embeddings: {p} (corre 00 primero)"
+    assert os.path.isfile(p), f"missing embeddings: {p} (run step 00 first)"
     z = np.load(p, allow_pickle=True)
     X = z["X"].astype(np.float64); y = z["y"].astype(int); st = z["subtype"].astype(str)
     A = all_axes(standardize(X), y, st)
@@ -47,10 +46,10 @@ def coverage(ks, C, subset):
 
 
 def sample_subsets(ks, C, n_target, seed=0):
-    """Subconjuntos de tamaños 2..K-1 elegidos para CUBRIR el rango de cobertura.
+    """Subconjuntos de tamaños 2..K-1 elegidos para CUBRIR el rango de coverage.
 
-    Si el nº total de combinaciones es pequeño (K<=5) se toman todas; si es grande, se muestrea
-    y se estratifica por cobertura para no concentrar todos los puntos en el mismo sitio."""
+    Si el nº total de combinaciones es pequeño (K<=5) se toman all; si es grande, se muestrea
+    y se estratifica por coverage para no concentrar todos los puntos en el mismo sitio."""
     K = len(ks)
     sizes = list(range(2, K)) or [1]
     cand = []
@@ -62,7 +61,7 @@ def sample_subsets(ks, C, n_target, seed=0):
             combos = [combos[i] for i in pick]
         cand += [list(c) for c in combos]
     covs = np.array([coverage(ks, C, s) for s in cand])
-    # estratificar: n_target cuantiles de cobertura, uno por estrato
+    # stratify: n_target coverage quantiles, one per stratum
     order = np.argsort(covs)
     picks, seen = [], set()
     for q in np.linspace(0, len(order) - 1, min(n_target, len(order))):
@@ -80,9 +79,9 @@ def write_manifest(ds, keep, tag):
     with open(src) as f, open(dst, "w", newline="") as g:
         rd = csv.DictReader(f); w = csv.writer(g); w.writerow(rd.fieldnames)
         for r in rd:
-            # test SIEMPRE intacto. dev: intacto en datasets cuyo protocolo oficial ya separa los
-            # tipos de ataque entre splits (CASIA-SURF: train 04/05/06 vs dev/test 01/02/03) — si se
-            # filtrara por los subtipos de train, el dev se quedaria SIN ataques y el EER no existe.
+            # test SIEMPRE intacto. dev: intacto en datasets cuyo protocolo official ya separa los
+            # tipos de attack entre splits (CASIA-SURF: train 04/05/06 vs dev/test 01/02/03) — si se
+            # filtrara por los subtypes de train, el dev se quedaria without attacks y el EER no existe.
             dev_intact = ds in ("CASIA-SURF",)
             if r["split"] == "test" or (r["split"] == "dev" and dev_intact) or r["subtype"] in keep:
                 w.writerow([r[c] for c in rd.fieldnames])
@@ -96,7 +95,7 @@ def main():
     ks, C = axes_and_C(ds)
     subs = sample_subsets(ks, C, n_sub)
     est = EST.get(ds, 60)
-    print(f"== {ds}: {len(ks)} subtipos -> {len(subs)} subconjuntos x {seeds} seeds ==")
+    print(f"== {ds}: {len(ks)} subtypes -> {len(subs)} subsets x {seeds} seeds ==")
     jobs, meta = [], {}
     for i, S in enumerate(subs):
         cov = coverage(ks, C, S)

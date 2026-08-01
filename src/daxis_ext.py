@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 """
-Extensiones sobre la MATEMÁTICA de DAXIS (no el diagnóstico GO/NO-GO).
+Geometry helpers built on the DAXIS discriminant-axis construction.
 
-Primitivas que reutilizamos del método (Paper C):
-  - eje discriminante por grupo:  d_g = norm(mu_spoof_g - mu_live)
-  - geometría angular entre ejes: matriz de cosenos par a par
-y extensiones NUEVAS (no existen en daxis_library, que es intocable por ser submódulo público):
-  - pseudo-dominios para FAS (cada subtipo de ataque + shard de bonafide disjunto por sujeto)
-  - eje agregado de un conjunto de subtipos (unión de sus spoof)
-  - scores PER-SAMPLE: S1 margen axial, S2 delta leave-one-out, S3 coherencia local
+The upstream daxis library exposes only a scalar score, and its own repo forbids editing, so the
+pieces this paper needs live here: the per-group axis vectors themselves, the cosine matrix
+between them, the orderings derived from that matrix, and per-sample axial scores.
 
-Todo opera sobre matrices numpy (los .npz de 00_extract_embeddings.py); sin torch.
+Core definition. For attack type k, the discriminant axis is the unit vector joining the class
+means in a frozen feature space:
+
+    d_k = normalise( mean(features of attack k) - mean(features of bonafide) )
+
+Everything else is angles between those vectors. Only MEANS are estimated, which is far more
+stable in high dimension than an inverse covariance.
 """
 import numpy as np
 
 
-# ---------- estandarización (pooled, como DAXIS: una vez sobre TODO) ----------
+# ---------- standardisation (pooled, as in DAXIS: once over EVERYTHING) ----------
 
 def standardize(X):
     mu = X.mean(0, keepdims=True)
@@ -31,7 +33,7 @@ def _unit(v):
 
 def live_shards(subject, live_mask, subtypes, seed=0):
     """Asigna cada SUJETO bonafide a un subtipo (round-robin seeded) -> shards disjuntos
-    por sujeto. Devuelve array domain: para spoof su subtipo; para live el subtipo de su shard."""
+    by subject. Returns a domain array: the subtype for spoof rows, and the shard's subtype for bonafide."""
     rng = np.random.RandomState(seed)
     subs = np.unique(subject[live_mask])
     order = rng.permutation(len(subs))
@@ -40,7 +42,7 @@ def live_shards(subject, live_mask, subtypes, seed=0):
 
 
 def pseudo_domains(y, subtype, subject, seed=0):
-    """domain[i] = subtype del spoof, o subtipo asignado al sujeto live (shard)."""
+    """domain[i] = the spoof subtype, or the subtype assigned to a bonafide subject (shard)."""
     live = (y == 0)
     sts = sorted(set(subtype[~live]))
     assign = live_shards(subject, live, sts, seed)
@@ -48,11 +50,11 @@ def pseudo_domains(y, subtype, subject, seed=0):
     return dom, sts
 
 
-# ---------- ejes ----------
+# ---------- axes ----------
 
 def axis_of(Xs, y, mask_spoof_group, live_mask):
-    """Eje del grupo con mu_live GLOBAL (estimador estable para ordenar/greedy).
-    (El daxis_score canónico usa mu_live por-shard; comparamos ambos en 01 por robustez.)"""
+    """Group axis using a GLOBAL bonafide mean (a stable estimator for ordering/greedy).
+    The canonical daxis_score uses a per-shard bonafide mean; step 01 compares both."""
     return _unit(Xs[mask_spoof_group].mean(0) - Xs[live_mask].mean(0))
 
 
@@ -63,7 +65,7 @@ def all_axes(Xs, y, subtype):
 
 
 def aggregate_axis(Xs, y, subtype, group):
-    """Eje del CONJUNTO de subtipos (unión de sus spoof vs live global)."""
+    """Axis of a SET of subtypes (their pooled spoof samples against global bonafide)."""
     live = (y == 0)
     m = np.isin(subtype, list(group)) & ~live
     return _unit(Xs[m].mean(0) - Xs[live].mean(0))
@@ -75,7 +77,7 @@ def cosine_matrix(axes, order=None):
     return ks, np.clip(D @ D.T, -1, 1)
 
 
-# ---------- órdenes derivados de la geometría ----------
+# ---------- orderings derived from the geometry ----------
 
 def order_aligned_first(ks, C, desc=True):
     mean_cos = (C.sum(1) - 1.0) / (len(ks) - 1)          # coseno medio al resto (sin diagonal)
@@ -84,7 +86,7 @@ def order_aligned_first(ks, C, desc=True):
 
 
 def order_greedy(ks, axes, Xs, y, subtype, start, opposite=False):
-    """Arranca en `start`; cada paso añade el subtipo con mayor (o menor) coseno
+    """Starts at `start`; each step adds the subtype with the highest (or lowest) cosine
     respecto al eje AGREGADO del conjunto ya incluido (recomputado sobre la unión)."""
     left = [k for k in ks if k != start]
     seq = [start]
@@ -133,7 +135,7 @@ def order_cluster_blocked(ks, C, n_blocks=3):
 
 
 def pick_diverse(ks, C, m):
-    """Farthest-point sampling angular: subconjunto de m subtipos maximizando diversidad."""
+    """Farthest-point sampling angular: subset de m subtipos maximizando diversidad."""
     mean_cos = (C.sum(1) - 1.0) / (len(ks) - 1)
     sel = [int(np.argmin(mean_cos))]                      # semilla: el más apartado
     while len(sel) < m:
@@ -155,26 +157,26 @@ def sample_scores(Xs, y, subtype):
     axes = all_axes(Xs, y, subtype)
     # midpoint por grupo para el margen firmado
     S1 = np.zeros(len(y)); S2 = np.zeros(len(y)); S3 = np.full(len(y), np.nan)
-    # eje "resto" por grupo (media de los demás ejes) para S2
+    # axis "resto" por grupo (media de los demás axes) para S2
     rest = {st: _unit(np.mean([axes[o] for o in sts if o != st], axis=0)) for st in sts}
     for st in sts:
         d = axes[st]
         g_sp = (subtype == st) & ~live
         mu_sp = Xs[g_sp].mean(0); n_sp = int(g_sp.sum())
         c = (mu_sp + mu_live) / 2.0
-        # S1 para spoof del grupo y para live (live usa el eje de su... todos los ejes? usar
-        # el peor margen sobre todos los ejes sería severo; usamos el eje del grupo para spoof
-        # y para live el margen respecto al eje AGREGADO global)
+        # S1 para spoof del grupo y para live (live usa el axis de su... todos los axes? usar
+        # el peor margen sobre todos los axes sería severo; usamos el axis del grupo para spoof
+        # y para live el margen respecto al axis AGREGADO global)
         S1[g_sp] = (Xs[g_sp] - c) @ d                      # y=1: lado positivo = correcto
         S3[g_sp] = ((Xs[g_sp] - mu_live) / (np.linalg.norm(Xs[g_sp] - mu_live, axis=1, keepdims=True) + 1e-12)) @ d
-        # S2: quitar x del grupo -> nuevo eje (update de media en forma cerrada)
+        # S2: quitar x del grupo -> nuevo axis (update de media en forma cerrada)
         base = float(d @ rest[st])
         Xg = Xs[g_sp]
         mu_wo = (mu_sp[None, :] * n_sp - Xg) / (n_sp - 1)          # (n_g, p)
         d_wo = mu_wo - mu_live[None, :]
         d_wo /= (np.linalg.norm(d_wo, axis=1, keepdims=True) + 1e-12)
         S2[g_sp] = d_wo @ rest[st] - base                  # >0: quitarla MEJORA el alineamiento
-    # live: margen respecto al eje agregado global (lado negativo = correcto para y=0)
+    # live: margen respecto al axis agregado global (lado negativo = correcto para y=0)
     agg = aggregate_axis(Xs, y, subtype, sts)
     c_all = (Xs[~live].mean(0) + mu_live) / 2.0
     S1[live] = -((Xs[live] - c_all) @ agg)                 # firmado: positivo = lado correcto

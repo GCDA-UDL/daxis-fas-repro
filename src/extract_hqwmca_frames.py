@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Extrae frames de los .mov de HQ-WMCA-RGB conservando el subtipo de ataque en la ruta.
-Salida: /mnt/d1/data/HQ-WMCA/frames/<Bonafide|SUBTIPO>/<video>/frameNNN.jpg"""
+"""Extrae frames de los .mov de HQ-WMCA-RGB conservando el subattack type en la ruta.
+output: /mnt/d1/data/HQ-WMCA/frames/<Bonafide|SUBTIPO>/<video>/frameNNN.jpg"""
 import os, sys, cv2
 SRC = "/mnt/d1/data/HQ-WMCA/HQ-WMCA-RGB/HQ-WMCA-RGB"
 DST = "/mnt/d1/data/HQ-WMCA/frames"

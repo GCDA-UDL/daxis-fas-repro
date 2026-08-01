@@ -40,7 +40,7 @@ RES_CSV = os.path.join(RES_DIR, "results_subtype.csv")
 
 
 def subject_of(path, dataset):
-    """Sujeto/identidad, para que el dev NO comparta sujeto con train (evita fuga)."""
+    """Subject identity, so that dev shares no subject with train (prevents leakage)."""
     if dataset == "CelebA-Spoof":
         m = re.search(r"/Data/(?:train|test)/([^/]+)/", path)
         return m.group(1) if m else os.path.basename(os.path.dirname(path))
@@ -69,7 +69,7 @@ class ListDataset(Dataset):
         try:
             return self.tf(Image.open(p).convert("RGB")), y
         except Exception:
-            # no enmascarar el problema en silencio: contabilizado por el llamador vía --strict
+            # do not mask the problem silently: the caller accounts for it
             return torch.zeros(3, 224, 224), y
 
 
@@ -94,7 +94,7 @@ def main():
     ap.add_argument("--design", default="xtype", choices=["within", "xtype"])
     ap.add_argument("--holdout", default="", help="subtipos no vistos (coma) para design=xtype")
     ap.add_argument("--order", default="freq", choices=["freq", "reverse", "random", "standard"])
-    # --- extensiones DAXIS (daxis_experiments): retrocompatibles, sin efecto si no se usan ---
+    # --- extensiones DAXIS (daxis_experiments): retrocompatibles, without efecto si no se usan ---
     ap.add_argument("--order_list", default=None, help="orden custom de subtipos (coma); ignora --order salvo 'standard'")
     ap.add_argument("--stages_json", default=None, help="JSON: etapas=[[ [subtipo,frac],... ],...] (rehearsal/fusión)")
     ap.add_argument("--sample_order", default="shuffle", choices=["shuffle", "easy2hard", "hard2easy"],
@@ -127,21 +127,21 @@ def main():
     dv_pool = [r for r in rows if r[0] == "dev"]
     te_pool = [r for r in rows if r[0] == "test"]
 
-    # --- diseño ---
+    # --- design ---
     if args.design == "xtype":
         assert hold, "design=xtype requiere --holdout"
         tr_pool = [r for r in tr_pool if r[2] == "live" or r[2] not in hold]
         dv_pool = [r for r in dv_pool if r[2] == "live" or r[2] not in hold]
         te_pool = [r for r in te_pool if r[2] == "live" or r[2] in hold]   # test = SOLO no vistos
 
-    # --- dev: oficial si existe; si no, se talla por SUJETO desde train ---
+    # --- dev: use the official split if present, otherwise carve it by subject from train ---
     if not dv_pool:
         subs = sorted({subject_of(r[3], args.dataset) for r in tr_pool})
         rng = random.Random(0); rng.shuffle(subs)
         dev_subs = set(subs[:max(1, int(len(subs) * args.dev_frac))])
         dv_pool = [r for r in tr_pool if subject_of(r[3], args.dataset) in dev_subs]
         tr_pool = [r for r in tr_pool if subject_of(r[3], args.dataset) not in dev_subs]
-        print(f"  dev tallado por sujeto: {len(dev_subs)}/{len(subs)} sujetos")
+        print(f"  dev tallado por sujeto: {len(dev_subs)}/{len(subs)} subjects")
 
     # --- muestreo (tractabilidad) ---
     by_st = defaultdict(list)
@@ -161,7 +161,7 @@ def main():
         order = [s for s in args.order_list.split(",") if s]
         unknown = set(order) - set(spoof_by)
         assert not unknown, f"--order_list con subtipos desconocidos: {unknown} (hay: {sorted(spoof_by)})"
-    # scores per-sample para orden intra-etapa
+    # per-sample scores for within-stage ordering
     smap = None
     if args.sample_order != "shuffle":
         assert args.sample_scores, "--sample_order requiere --sample_scores"
