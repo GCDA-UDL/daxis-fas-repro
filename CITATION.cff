@@ -3,6 +3,14 @@ message: "If you use this software or its results, please cite the paper below."
 title: "Angular Coverage Governs Training-Set Selection in Face PAD: reproducibility package"
 type: software
 license: MIT
+doi: "10.5281/zenodo.21744076"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21744076"
+    description: "Concept DOI (always resolves to the latest version)"
+  - type: doi
+    value: "10.5281/zenodo.21745183"
+    description: "DOI of version v1.0.2"
 authors:
   - family-names: "da Silva"
     given-names: "Vitor"

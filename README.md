@@ -1,5 +1,7 @@
 # Angular coverage for training-set selection in face PAD — reproducibility package
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21744076.svg)](https://doi.org/10.5281/zenodo.21744076)
+
 Code and derived results for the paper "What to Train On, Not How to Order It: Angular Coverage
 Governs Training-Set Selection in Face Presentation Attack Detection".
 
