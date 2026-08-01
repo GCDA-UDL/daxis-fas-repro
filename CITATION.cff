@@ -15,9 +15,11 @@ authors:
   - family-names: "da Silva"
     given-names: "Vitor"
     affiliation: "Universitat de Lleida"
+    orcid: "https://orcid.org/0000-0002-3296-2752"
   - family-names: "Tomàs"
     given-names: "Rosana"
     affiliation: "Universitat de Lleida"
+    orcid: "https://orcid.org/0000-0002-1995-3974"
   - family-names: "Oliva Costas"
     given-names: "Joaquim"
     affiliation: "Universitat de Lleida"
@@ -25,9 +27,11 @@ authors:
   - family-names: "Guirado"
     given-names: "Fernando"
     affiliation: "Universitat de Lleida"
+    orcid: "https://orcid.org/0000-0003-1352-9555"
   - family-names: "Giné"
     given-names: "Francesc"
     affiliation: "Universitat de Lleida"
+    orcid: "https://orcid.org/0000-0002-2348-5018"
 preferred-citation:
   type: article
   title: "What to Train On, Not How to Order It: Angular Coverage Governs Training-Set Selection in Face Presentation Attack Detection"

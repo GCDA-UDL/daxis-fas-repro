@@ -17,11 +17,13 @@
   "creators": [
     {
       "name": "da Silva, Vitor",
-      "affiliation": "Universitat de Lleida"
+      "affiliation": "Universitat de Lleida",
+      "orcid": "0000-0002-3296-2752"
     },
     {
       "name": "Tomàs, Rosana",
-      "affiliation": "Universitat de Lleida"
+      "affiliation": "Universitat de Lleida",
+      "orcid": "0000-0002-1995-3974"
     },
     {
       "name": "Oliva Costas, Joaquim",
@@ -30,11 +32,13 @@
     },
     {
       "name": "Guirado, Fernando",
-      "affiliation": "Universitat de Lleida"
+      "affiliation": "Universitat de Lleida",
+      "orcid": "0000-0003-1352-9555"
     },
     {
       "name": "Giné, Francesc",
-      "affiliation": "Universitat de Lleida"
+      "affiliation": "Universitat de Lleida",
+      "orcid": "0000-0002-2348-5018"
     }
   ]
 }
