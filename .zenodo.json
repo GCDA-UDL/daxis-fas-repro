@@ -15,12 +15,25 @@
     "reproducibility"
   ],
   "creators": [
-    {"name": "da Silva, Vitor", "affiliation": "Universitat de Lleida"},
-    {"name": "Tomàs, Rosana", "affiliation": "Universitat de Lleida"},
-    {"name": "Roig, Concepció", "affiliation": "Universitat de Lleida"},
-    {"name": "Cores, Fernando", "affiliation": "Universitat de Lleida"},
-    {"name": "Guirado, Fernando", "affiliation": "Universitat de Lleida"},
-    {"name": "Lérida, Josep Lluís", "affiliation": "Universitat de Lleida"},
-    {"name": "Giné, Francesc", "affiliation": "Universitat de Lleida"}
+    {
+      "name": "da Silva, Vitor",
+      "affiliation": "Universitat de Lleida"
+    },
+    {
+      "name": "Tomàs, Rosana",
+      "affiliation": "Universitat de Lleida"
+    },
+    {
+      "name": "Oliva, Joaquim",
+      "affiliation": "Universitat de Lleida"
+    },
+    {
+      "name": "Guirado, Fernando",
+      "affiliation": "Universitat de Lleida"
+    },
+    {
+      "name": "Giné, Francesc",
+      "affiliation": "Universitat de Lleida"
+    }
   ]
 }
